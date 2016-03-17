@@ -1,4 +1,4 @@
-# ReduxFormsAndRoutes
+# ReduxBlog
 
 Interested in learning [Redux](https://www.udemy.com/react-redux/)?
 
@@ -6,8 +6,8 @@ Interested in learning [Redux](https://www.udemy.com/react-redux/)?
 Checkout this repo, install dependencies, then start the gulp process with the following:
 
 ```
-	> git clone git@github.com:juliobetta/ReduxFormsAndRoutes.git
-	> cd ReduxFormsAndRoutes
+	> git clone git@github.com:juliobetta/ReduxBlog.git
+	> cd ReduxBlog
 	> npm install
 	> npm start
 ```
