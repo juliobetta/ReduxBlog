@@ -5,7 +5,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        Hot dog!
+        {this.props.children}
       </div>
     );
   }
