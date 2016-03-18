@@ -1,12 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 // very similar to 'connect' from react-redux. It is responsible to map
 // the global state to props
 import { reduxForm } from 'redux-form';
-import { createPost } from '../actions/index';
 import { Link } from 'react-router';
+import { createPost } from '../actions/index';
 
 
 class PostsNew extends Component {
+
+  // Check through all of PostsNew's parents for the property router
+  // and assign it to this.context.router
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
 
   checkValid(field) {
     return field.touched && field.invalid ? 'has-danger' : '';
@@ -23,12 +30,21 @@ class PostsNew extends Component {
   }
 
 
+  onSubmitForm(props) {
+    this.props.createPost(props)
+      .then((response) => {
+        this.context.router.push('/');
+      });
+  }
+
+
   render() {
     const { fields: { title, categories, content }, handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.props.createPost)}>
+      <form onSubmit={handleSubmit(this.onSubmitForm.bind(this))}>
         <h3>Create a new Post</h3>
+
         <div className={`form-group ${this.checkValid(title)}`}>
           <label>Title</label>
           <input type="text" className="form-control" {...title} />
