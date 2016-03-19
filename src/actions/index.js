@@ -4,10 +4,12 @@ import { API_URL, API_KEY } from '../constants/common';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';
+export const GET_POST    = 'GET_POST';
+export const DELETE_POST = 'DELETE_POST';
 
 
 export function fetchPosts() {
-  const url     = `${API_URL}/posts?key=${API_KEY}`;
+  const url     = `${API_URL}/posts${API_KEY}`;
   const request = axios.get(url);
 
   return {
@@ -18,11 +20,33 @@ export function fetchPosts() {
 
 
 export function createPost(props) {
-  const url     = `${API_URL}/posts?key=${API_KEY}`;
+  const url     = `${API_URL}/posts${API_KEY}`;
   const request = axios.post(url, props);
 
   return {
     type:    CREATE_POST,
+    payload: request
+  };
+}
+
+
+export function getPost(id) {
+  const url     = `${API_URL}/posts/${id}${API_KEY}`;
+  const request = axios.get(url);
+
+  return {
+    type:    GET_POST,
+    payload: request
+  };
+}
+
+
+export function deletePost(id) {
+  const url     = `${API_URL}/posts/${id}${API_KEY}`;
+  const request = axios.delete(url);
+
+  return {
+    type:    DELETE_POST,
     payload: request
   };
 }
