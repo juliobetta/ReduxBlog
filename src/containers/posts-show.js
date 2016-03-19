@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {Link } from 'react-router';
 import { getPost, emptyPost, deletePost } from '../actions/index';
 
-class PostsShow extends Component {
+
+class PostsForm extends Component {
 
   // Check through all of PostsNew's parents for the property router
   // and assign it to this.context.router
@@ -33,11 +34,16 @@ class PostsShow extends Component {
       return (<div>Loading...</div>);
     }
 
-    const {title, categories, content} = this.props.post;
+    const {id, title, categories, content} = this.props.post;
 
     return (
       <div>
         <div className="text-xs-right">
+          <Link to={`/posts/edit/${id}`}
+                className="btn btn-primary">
+            Edit Post
+          </Link>
+
           <button className="btn btn-danger"
                   onClick={this.onClickDelete.bind(this)}>
             Delete Post
@@ -54,14 +60,7 @@ class PostsShow extends Component {
 }
 
 
-function mapStateToProps(state) {
-  return {
-    post: state.posts.post
-  };
-}
-
-
 export default connect(
-  mapStateToProps,
+  (state) => { return { post: state.posts.post } },
   { getPost, deletePost, emptyPost }
-)(PostsShow);
+)(PostsForm);

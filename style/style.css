@@ -2,6 +2,6 @@
   margin: 20px 0;
 }
 
-form a {
-  margin-left: 5px;
+a.btn, button.btn {
+  margin-right: 5px;
 }

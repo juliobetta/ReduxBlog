@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchPosts } from '../actions/index';
+import { fetchPosts, emptyPost } from '../actions/index';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 class PostsIndex extends Component {
 
   componentWillMount() {
+    this.props.emptyPost();
     this.props.fetchPosts();
   }
 
@@ -44,5 +45,5 @@ class PostsIndex extends Component {
 
 export default connect(
   (state) => { return { posts: state.posts.all }; },
-  { fetchPosts }
+  { fetchPosts, emptyPost }
 )(PostsIndex);
