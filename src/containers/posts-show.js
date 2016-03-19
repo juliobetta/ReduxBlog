@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {Link } from 'react-router';
-import { getPost, deletePost } from '../actions/index';
+import { getPost, emptyPost, deletePost } from '../actions/index';
 
 class PostsShow extends Component {
 
@@ -13,6 +13,7 @@ class PostsShow extends Component {
 
 
   componentWillMount() {
+    this.props.emptyPost();
     this.props.getPost(this.props.params.id);
   }
 
@@ -60,4 +61,7 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { getPost, deletePost })(PostsShow);
+export default connect(
+  mapStateToProps,
+  { getPost, deletePost, emptyPost }
+)(PostsShow);

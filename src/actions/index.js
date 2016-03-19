@@ -6,6 +6,7 @@ export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';
 export const GET_POST    = 'GET_POST';
 export const DELETE_POST = 'DELETE_POST';
+export const EMPTY_POST  = 'EMPTY_POST';
 
 
 export function fetchPosts() {
@@ -48,5 +49,13 @@ export function deletePost(id) {
   return {
     type:    DELETE_POST,
     payload: request
+  };
+}
+
+
+export function emptyPost() {
+  return {
+    type: EMPTY_POST,
+    payload: {}
   };
 }
