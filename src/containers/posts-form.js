@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 // very similar to 'connect' from react-redux. It is responsible to map
 // the global state to props
 import { reduxForm, reset } from 'redux-form';
 import { Link } from 'react-router';
+import PureComponent from '../components/pure-component';
 import { getPost, updatePost, createPost } from '../actions/index';
 import formValidator from '../validators/posts-form-validator';
 import FormGroup from '../components/form-group';
@@ -15,7 +16,7 @@ const reduxFormProperties = {
 };
 
 
-class PostsForm extends Component {
+class PostsForm extends PureComponent {
 
   // Check through all of PostsForm's parents for the property router
   // and assign it to this.context.router

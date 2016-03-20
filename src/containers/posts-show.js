@@ -1,10 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {Link } from 'react-router';
+import PureComponent from '../components/pure-component';
 import { getPost, emptyPost, deletePost } from '../actions/index';
+import Loading from '../components/loading';
 
 
-class PostsForm extends Component {
+class PostsForm extends PureComponent {
 
   // Check through all of PostsNew's parents for the property router
   // and assign it to this.context.router
@@ -31,7 +33,7 @@ class PostsForm extends Component {
 
   render() {
     if(!this.props.post) {
-      return (<div>Loading...</div>);
+      return (<Loading />);
     }
 
     const {id, title, categories, content} = this.props.post;

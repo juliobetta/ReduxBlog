@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
-import { fetchPosts, emptyPost } from '../actions/index';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import PureComponent from '../components/pure-component';
+import { fetchPosts, emptyPost } from '../actions/index';
+import Loading from '../components/loading';
 
 
-class PostsIndex extends Component {
+class PostsIndex extends PureComponent {
 
   componentWillMount() {
     this.props.emptyPost();
@@ -25,6 +27,10 @@ class PostsIndex extends Component {
 
 
   render() {
+    if(!this.props.posts) {
+      return <Loading />;
+    }
+
     return (
       <div>
         <div className="text-xs-right">

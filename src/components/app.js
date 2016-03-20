@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PureComponent from './pure-component';
 
 
-class App extends Component {
+class App extends PureComponent {
   render() {
     return (
       <div>
