@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/app';
-import PostsIndex from './containers/posts-index';
-import PostsForm from './containers/posts-form';
-import PostsShow from './containers/posts-show';
+import PostsIndex from './components/posts/posts-index';
+import PostsForm from './components/posts/posts-form';
+import PostsShow from './components/posts/posts-show';
 
 
 export default (

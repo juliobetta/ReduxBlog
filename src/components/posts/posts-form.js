@@ -3,10 +3,10 @@ import React, { PropTypes } from 'react';
 // the global state to props
 import { reduxForm, reset } from 'redux-form';
 import { Link } from 'react-router';
-import PureComponent from '../components/pure-component';
-import { getPost, updatePost, createPost } from '../actions/index';
-import formValidator from '../validators/posts-form-validator';
-import FormGroup from '../components/form-group';
+import PureComponent from '../pure-component';
+import FormGroup from '../form-group';
+import { getPost, updatePost, createPost } from '../../actions/index';
+import formValidator from '../../validators/posts-form-validator';
 
 
 const reduxFormProperties = {

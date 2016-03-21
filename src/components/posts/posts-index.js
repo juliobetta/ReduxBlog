@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import PureComponent from '../components/pure-component';
-import { fetchPosts, emptyPost } from '../actions/index';
-import Loading from '../components/loading';
+import PostsItem from './posts-item';
+import PureComponent from '../pure-component';
+import Loading from '../loading';
+import { fetchPosts, emptyPost } from '../../actions/index';
 
 
 class PostsIndex extends PureComponent {
@@ -11,18 +12,6 @@ class PostsIndex extends PureComponent {
   componentWillMount() {
     this.props.emptyPost();
     this.props.fetchPosts();
-  }
-
-
-  renderPosts() {
-    return this.props.posts.map((post) => {
-      return (
-        <li key={post.id} className="list-group-item">
-          <span className="pull-xs-right">{post.categories}</span>
-          <Link to={`/posts/${post.id}`}>{post.title}</Link>
-        </li>
-      );
-    });
   }
 
 
@@ -41,7 +30,9 @@ class PostsIndex extends PureComponent {
 
         <h3>Posts</h3>
 
-        <ul className="list-group">{this.renderPosts()}</ul>
+        <ul className="list-group">
+          {this.props.posts.map(post => <PostsItem key={post.id} {...post}/>)}
+        </ul>
       </div>
     );
   }
@@ -50,6 +41,6 @@ class PostsIndex extends PureComponent {
 
 
 export default connect(
-  (state) => { return { posts: state.posts.all }; },
+  state => ({ posts: state.posts.all }),
   { fetchPosts, emptyPost }
 )(PostsIndex);
