@@ -5,7 +5,7 @@ import { reduxForm, reset } from 'redux-form';
 import { Link } from 'react-router';
 import PureComponent from '../pure-component';
 import FormGroup from '../form-group';
-import { getPost, updatePost, createPost } from '../../actions/index';
+import { getPost, updatePost, createPost } from '../../actions/posts-actions';
 import formValidator from '../../validators/posts-form-validator';
 
 

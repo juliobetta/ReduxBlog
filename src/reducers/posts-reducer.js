@@ -1,5 +1,5 @@
 import { FETCH_POSTS, GET_POST, UPDATE_POST,
-         DELETE_POST, EMPTY_POST } from '../actions/index';
+         DELETE_POST, EMPTY_POST } from '../actions/posts-actions';
 
 
 const INITIAL_STATE = { all: [], post: null };

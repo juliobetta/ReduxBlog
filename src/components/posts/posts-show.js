@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {Link } from 'react-router';
 import PureComponent from '../pure-component';
 import Loading from '../loading';
-import { getPost, emptyPost, deletePost } from '../../actions/index';
+import { getPost, emptyPost, deletePost } from '../../actions/posts-actions';
 
 
 class PostsForm extends PureComponent {

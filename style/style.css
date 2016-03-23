@@ -5,3 +5,8 @@
 a.btn, button.btn {
   margin-right: 5px;
 }
+
+.col-center {
+  float: none !important;
+  margin: 0 auto !important;
+}
