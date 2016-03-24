@@ -1,2 +1,1 @@
-export const API_KEY = '?key=juliobetta';
-export const API_URL = 'http://reduxblogserver.herokuapp.com/api';
+export const API_URL = 'http://0.0.0.0:3000/api';

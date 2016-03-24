@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 import { reduxForm, reset } from 'redux-form';
 import { Link } from 'react-router';
 import PureComponent from '../pure-component';
-import FormGroup from '../form-group';
+import FormGroup from '../elements/form-group';
 import { getPost, updatePost, createPost } from '../../actions/posts-actions';
 import formValidator from '../../validators/posts-form-validator';
 
@@ -47,13 +47,15 @@ class PostsForm extends PureComponent {
   }
 
 
-  onSubmitForm(props) {
+  onSubmitForm(data) {
     let action = null;
 
+    const { currentUser: { token } } = this.props;
+
     if(this.isUpdateForm()) {
-      action = this.props.updatePost(this.props.params.id, props);
+      action = this.props.updatePost(this.props.params.id, data, token);
     } else {
-      action = this.props.createPost(props);
+      action = this.props.createPost(data, token);
     }
 
     action.then(() => this.context.router.push('/') );
@@ -96,7 +98,10 @@ class PostsForm extends PureComponent {
 // #############################################################################
 
   function mapStateToProps(state) {
-    return { initialValues: state.posts.post };
+    return {
+      initialValues: state.posts.post,
+      currentUser: state.auth.currentUser
+    };
   }
 
 // #############################################################################

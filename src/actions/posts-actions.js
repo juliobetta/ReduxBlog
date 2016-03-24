@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, API_KEY } from '../constants/common';
+import { API_URL } from '../constants/common';
 
 
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -10,8 +10,17 @@ export const UPDATE_POST = 'UPDATE_POST';
 export const EMPTY_POST  = 'EMPTY_POST';
 
 
+const embedToken = (token) => {
+  return {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+};
+
+
 export function fetchPosts() {
-  const url     = `${API_URL}/posts${API_KEY}`;
+  const url     = `${API_URL}/posts`;
   const request = axios.get(url);
 
   return {
@@ -21,9 +30,9 @@ export function fetchPosts() {
 }
 
 
-export function createPost(data) {
-  const url     = `${API_URL}/posts${API_KEY}`;
-  const request = axios.post(url, data);
+export function createPost(data, token = null) {
+  const url     = `${API_URL}/posts`;
+  const request = axios.post(url, data, embedToken(token));
 
   return {
     type:    CREATE_POST,
@@ -33,7 +42,7 @@ export function createPost(data) {
 
 
 export function getPost(id) {
-  const url     = `${API_URL}/posts/${id}${API_KEY}`;
+  const url     = `${API_URL}/posts/${id}`;
   const request = axios.get(url);
 
   return {
@@ -43,9 +52,9 @@ export function getPost(id) {
 }
 
 
-export function deletePost(id) {
-  const url     = `${API_URL}/posts/${id}${API_KEY}`;
-  const request = axios.delete(url);
+export function deletePost(id, token = null) {
+  const url     = `${API_URL}/posts/${id}`;
+  const request = axios.delete(url, embedToken(token));
 
   return {
     type:    DELETE_POST,
@@ -62,9 +71,9 @@ export function emptyPost() {
 }
 
 
-export function updatePost(id, data) {
-  const url     = `${API_URL}/posts/${id}${API_KEY}`;
-  const request = axios.patch(url, data);
+export function updatePost(id, data, token = null) {
+  const url     = `${API_URL}/posts/${id}`;
+  const request = axios.patch(url, data, embedToken(token));
 
   return {
     type: UPDATE_POST,

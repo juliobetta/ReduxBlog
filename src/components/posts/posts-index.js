@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PostsItem from './posts-item';
 import PureComponent from '../pure-component';
-import Loading from '../loading';
+import Loading from '../elements/loading';
 import { fetchPosts, emptyPost } from '../../actions/posts-actions';
 
 
