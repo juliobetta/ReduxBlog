@@ -6,7 +6,7 @@ import FormGroup from '../elements/form-group';
 import { ERROR } from '../../constants/alert-status';
 import AlertMessage from '../elements/alert-message';
 import formValidator from '../../validators/auth-form-validator';
-import { signin } from '../../actions/auth-actions';
+import { signin } from '../../actions/users-actions';
 
 
 const reduxFormProperties = {
@@ -60,6 +60,6 @@ class AuthForm extends PureComponent {
 
 export default reduxForm(
   reduxFormProperties,
-  (state) => ({ alerts: state.auth.errors }),
+  (state) => ({ alerts: state.users.errors }),
   { signin }
 )(AuthForm);

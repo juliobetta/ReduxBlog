@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../constants/common';
-
+import { embedToken } from '../utils';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';
@@ -8,15 +8,6 @@ export const GET_POST    = 'GET_POST';
 export const DELETE_POST = 'DELETE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
 export const EMPTY_POST  = 'EMPTY_POST';
-
-
-const embedToken = (token) => {
-  return {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  };
-};
 
 
 export function fetchPosts() {

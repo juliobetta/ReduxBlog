@@ -24,7 +24,9 @@ class PostsForm extends PureComponent {
   onClickDelete(event) {
     event.preventDefault();
 
-    const { currentUser: { token }} = this.props || null;
+    const token = this.props.currentUser
+      && this.props.currentUser.token
+      || null;
 
     if(confirm('Are you sure?')) {
       this.props.deletePost(this.props.params.id, token)
@@ -65,6 +67,6 @@ class PostsForm extends PureComponent {
 
 
 export default connect(
-  (state) => ({ post: state.posts.post, currentUser: state.auth.currentUser }),
+  (state) => ({ post: state.posts.post, currentUser: state.users.currentUser }),
   { getPost, deletePost, emptyPost }
 )(PostsForm);

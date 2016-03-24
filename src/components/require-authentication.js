@@ -12,14 +12,14 @@ export default function(ComposedComponent) {
 
     componentWillMount() {
       if(!this.props.isSignedIn) {
-        this.context.router.push('sign_in');
+        this.context.router.push('/sign_in');
       }
     }
 
 
     componentWillUpdate(nextProps) {
       if(!nextProps.isSignedIn) {
-        this.context.router.push('sign_in');
+        this.context.router.push('/sign_in');
       }
     }
 
@@ -31,6 +31,6 @@ export default function(ComposedComponent) {
 
 
   return connect(
-    (state) => ({ isSignedIn: state.auth.isSignedIn })
+    (state) => ({ isSignedIn: state.users.isSignedIn })
   )(RequireAuthentication);
 }

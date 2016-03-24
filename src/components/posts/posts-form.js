@@ -93,25 +93,11 @@ class PostsForm extends PureComponent {
 }
 
 
-// #############################################################################
-// MIXINS ######################################################################
-// #############################################################################
-
-  function mapStateToProps(state) {
-    return {
-      initialValues: state.posts.post,
-      currentUser: state.auth.currentUser
-    };
-  }
-
-// #############################################################################
-// #############################################################################
-
-
-// connect: 1st argument is mapStateToProps, 2nd is mapDispatchToProps
-// reduxForm: 1st is form config, 2nd is mapStateToProps,
-// 3rd is mapDispatchToProps
 export default reduxForm(
-  reduxFormProperties, mapStateToProps,
+  reduxFormProperties,
+  (state) => ({
+    initialValues: state.posts.post,
+    currentUser: state.users.currentUser
+  }),
   { getPost, updatePost, createPost }
 )(PostsForm);
