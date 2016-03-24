@@ -12,14 +12,14 @@ export default function(ComposedComponent) {
 
     componentWillMount() {
       if(!this.props.isSignedIn) {
-        this.context.router.push('/');
+        this.context.router.push('sign_in');
       }
     }
 
 
     componentWillUpdate(nextProps) {
       if(!nextProps.isSignedIn) {
-        this.context.router.push('/');
+        this.context.router.push('sign_in');
       }
     }
 
