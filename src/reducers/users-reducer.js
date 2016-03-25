@@ -1,16 +1,19 @@
-import { AUTH_USER } from '../actions/users-actions';
+import { AUTH_USER, CREATE_USER,
+         UPDATE_USER, DELETE_USER } from '../actions/users-actions';
 
 
-const INITIAL_STATE = { currentUser: null, isSignedIn: false, errors: [] };
+const INITIAL_STATE = { currentUser: null, token: null, errors: [] };
 
 
 export default function(state = INITIAL_STATE, action) {
 
   switch(action.type) {
-    case AUTH_USER: return {
+    case AUTH_USER:
+    case UPDATE_USER:
+    case CREATE_USER: return {
       ...state,
       currentUser: action.payload.data        || null,
-      isSignedIn:  action.payload.data.token  || null,
+      token:       action.payload.data.token  || null,
       errors:      action.payload.data.errors || []
     };
   }

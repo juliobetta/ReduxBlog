@@ -1,1 +1,1 @@
-export const API_URL = 'http://reduxblogserver.herokuapp.com/api';
+export const API_URL = 'http://docker:3000/api';

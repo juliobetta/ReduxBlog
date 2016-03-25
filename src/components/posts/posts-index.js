@@ -11,7 +11,9 @@ class PostsIndex extends PureComponent {
 
   componentWillMount() {
     this.props.emptyPost();
-    this.props.fetchPosts();
+    if(this.props.token) {
+      this.props.fetchPosts(this.props.token);
+    }
   }
 
 
@@ -25,6 +27,10 @@ class PostsIndex extends PureComponent {
         <div className="text-xs-right">
           <Link to="/posts/new" className="btn btn-primary">
             Add new Post
+          </Link>
+
+          <Link to="/users/edit" className="btn btn-secondary">
+            Edit User
           </Link>
         </div>
 

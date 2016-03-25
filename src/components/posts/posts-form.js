@@ -27,7 +27,7 @@ class PostsForm extends PureComponent {
 
   componentWillMount() {
     if(this.isUpdateForm()) {
-      this.props.getPost(this.props.params.id);
+      this.props.getPost(this.props.params.id, this.props.token);
     }
   }
 
@@ -50,7 +50,7 @@ class PostsForm extends PureComponent {
   onSubmitForm(data) {
     let action = null;
 
-    const { currentUser: { token } } = this.props;
+    const { token } = this.props;
 
     if(this.isUpdateForm()) {
       action = this.props.updatePost(this.props.params.id, data, token);
@@ -96,8 +96,7 @@ class PostsForm extends PureComponent {
 export default reduxForm(
   reduxFormProperties,
   (state) => ({
-    initialValues: state.posts.post,
-    currentUser: state.users.currentUser
+    initialValues: state.posts.post
   }),
   { getPost, updatePost, createPost }
 )(PostsForm);

@@ -10,9 +10,17 @@ export const UPDATE_POST = 'UPDATE_POST';
 export const EMPTY_POST  = 'EMPTY_POST';
 
 
-export function fetchPosts() {
+export function emptyPost() {
+  return {
+    type: EMPTY_POST,
+    payload: {}
+  };
+}
+
+
+export function fetchPosts(token = null) {
   const url     = `${API_URL}/posts`;
-  const request = axios.get(url);
+  const request = axios.get(url, embedToken(token));
 
   return {
     type:    FETCH_POSTS,
@@ -32,9 +40,9 @@ export function createPost(data, token = null) {
 }
 
 
-export function getPost(id) {
+export function getPost(id, token = null) {
   const url     = `${API_URL}/posts/${id}`;
-  const request = axios.get(url);
+  const request = axios.get(url, embedToken(token));
 
   return {
     type:    GET_POST,
@@ -50,14 +58,6 @@ export function deletePost(id, token = null) {
   return {
     type:    DELETE_POST,
     payload: request
-  };
-}
-
-
-export function emptyPost() {
-  return {
-    type: EMPTY_POST,
-    payload: {}
   };
 }
 

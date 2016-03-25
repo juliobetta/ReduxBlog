@@ -5,23 +5,30 @@ import { FETCH_POSTS, GET_POST, UPDATE_POST,
 const INITIAL_STATE = { all: [], post: null };
 
 
+const updatePost = (state, data) => {
+  return state.all.map((post) => {
+    return post.id === data.id ? data : post;
+  });
+};
+
+const deletePost = (state, id) => {
+  return state.all.filter((post) => {
+    return post.id !== id;
+  });
+};
+
+
 export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case EMPTY_POST:  return { ...state, post: null };
     case FETCH_POSTS: return { ...state, all: action.payload.data };
     case GET_POST:    return { ...state, post: action.payload.data };
-    case EMPTY_POST:  return { ...state, post: null };
 
     case UPDATE_POST:
-      const changed = state.all.map((post) => {
-        return post.id === action.payload.data.id ? action.payload.data : post;
-      });
-      return { ...state, all: changed };
+    return { ...state, all: updatePost(state, action.payload.data) };
 
     case DELETE_POST:
-      const filtered = state.all.filter((post) => {
-        return post.id !== action.payload.data.id
-      });
-      return { ...state, all: filtered };
+    return { ...state, all: deletePost(state, action.payload.id) };
   }
 
   return state;

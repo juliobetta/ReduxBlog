@@ -17,19 +17,17 @@ class PostsForm extends PureComponent {
 
   componentWillMount() {
     this.props.emptyPost();
-    this.props.getPost(this.props.params.id);
+    if(this.props.token) {
+      this.props.getPost(this.props.params.id, this.props.token);
+    }
   }
 
 
   onClickDelete(event) {
     event.preventDefault();
 
-    const token = this.props.currentUser
-      && this.props.currentUser.token
-      || null;
-
     if(confirm('Are you sure?')) {
-      this.props.deletePost(this.props.params.id, token)
+      this.props.deletePost(this.props.params.id, this.props.token)
         .then(() => this.context.router.push('/') );
     }
   }
@@ -67,6 +65,6 @@ class PostsForm extends PureComponent {
 
 
 export default connect(
-  (state) => ({ post: state.posts.post, currentUser: state.users.currentUser }),
+  (state) => ({ post: state.posts.post }),
   { getPost, deletePost, emptyPost }
 )(PostsForm);

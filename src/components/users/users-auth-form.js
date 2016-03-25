@@ -10,13 +10,13 @@ import { signin } from '../../actions/users-actions';
 
 
 const reduxFormProperties = {
-  form: 'AuthForm', // the key should match the reducer name
+  form: 'UsersAuthForm', // the key should match the reducer name
   fields: ['email', 'password'],
   formValidator
 };
 
 
-class AuthForm extends PureComponent {
+class UsersAuthForm extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object
@@ -62,4 +62,4 @@ export default reduxForm(
   reduxFormProperties,
   (state) => ({ alerts: state.users.errors }),
   { signin }
-)(AuthForm);
+)(UsersAuthForm);

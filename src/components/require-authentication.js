@@ -10,16 +10,21 @@ export default function(ComposedComponent) {
     }
 
 
+    goToSignIn() {
+      this.context.router.push('/sign_in');
+    }
+
+
     componentWillMount() {
-      if(!this.props.isSignedIn) {
-        this.context.router.push('/sign_in');
+      if(!this.props.token) {
+        this.goToSignIn();
       }
     }
 
 
     componentWillUpdate(nextProps) {
-      if(!nextProps.isSignedIn) {
-        this.context.router.push('/sign_in');
+      if(!nextProps.token) {
+        this.goToSignIn();
       }
     }
 
@@ -31,6 +36,6 @@ export default function(ComposedComponent) {
 
 
   return connect(
-    (state) => ({ isSignedIn: state.users.isSignedIn })
+    (state) => ({ token: state.users.token })
   )(RequireAuthentication);
 }

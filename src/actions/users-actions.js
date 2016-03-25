@@ -32,10 +32,8 @@ export function signin(data) {
 
 
 export function cancel(token = null) {
-  embedToken(token);
-
   const url     = `${API_URL}/users/0`;
-  const request = axios.delete(url);
+  const request = axios.delete(url, embedToken(token));
 
   return {
     type: DELETE_USER,
@@ -45,10 +43,8 @@ export function cancel(token = null) {
 
 
 export function update(data, token = null) {
-  embedToken(token);
-
   const url     = `${API_URL}/users/0`;
-  const request = axios.patch(data);
+  const request = axios.patch(url, data, embedToken(token));
 
   return {
     type: UPDATE_USER,
