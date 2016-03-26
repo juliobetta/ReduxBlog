@@ -10,3 +10,7 @@ a.btn, button.btn {
   float: none !important;
   margin: 0 auto !important;
 }
+
+.hidden {
+  display: none !important;
+}

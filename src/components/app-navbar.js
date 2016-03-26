@@ -50,7 +50,7 @@ class AppNavBar extends PureComponent {
     return (
       <NavBar>
         <NavBarBrand path={rootUrl}/>
-        <NavBarItem isVisible={this.props.currentUser !== null} path="/">
+        <NavBarItem isHidden={this.props.currentUser === null} path="/">
           Posts
         </NavBarItem>
         <div className="pull-xs-right">
