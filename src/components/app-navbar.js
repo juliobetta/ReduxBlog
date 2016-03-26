@@ -45,9 +45,14 @@ class AppNavBar extends PureComponent {
 
 
   render() {
+    const rootUrl = this.props.currentUser ? "/" : "/sign_in";
+
     return (
       <NavBar>
-        <NavBarBrand />
+        <NavBarBrand path={rootUrl}/>
+        <NavBarItem isVisible={this.props.currentUser !== null} path="/">
+          Posts
+        </NavBarItem>
         <div className="pull-xs-right">
           {this.renderEmail()}
           {this.renderSignout()}

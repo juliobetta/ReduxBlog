@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import PureComponent from '../pure-component';
-import FormGroup from '../elements/form-group';
 import { ERROR } from '../../constants/alert-status';
+import PasswordFields from './users-passwords-fields';
 import Notification from '../elements/notification';
+import FormGroup from '../elements/form-group';
 import Button from '../elements/button';
 import formValidator from '../../validators/users-form-validator';
 import { registerUser, updateUser,
          cancelUser } from '../../actions/users-actions';
-import PasswordField from './users-password-field';
 
 
 const reduxFormProperties = {
@@ -42,24 +42,18 @@ class UsersForm extends PureComponent {
   }
 
 
-  renderPasswordFields() {
-    const {
-      fields: { current_password, password, password_confirmation }
-    } = this.props;
+  onClickCancelAccount(event) {
+    event.preventDefault();
 
-    const currentPasswordField = this.props.currentUser
-      ? (
-        <PasswordField label="Current Password" field={current_password} />
-      ) : null;
-
-    return (
-      <div>
-        {currentPasswordField}
-        <PasswordField label="Password" field={password} />
-        <PasswordField label="Password Confirmation"
-                       field={password_confirmation} />
-      </div>
-    );
+    const message = "Are you sure you want to cancel your account?\n" +
+                    "All your data and posts will be lost";
+    if(confirm(message)) {
+      this.props.cancelUser().then((response) => {
+        if(!response.error) {
+          this.context.router.push('/sign_in');
+        }
+      });
+    }
   }
 
 
@@ -80,9 +74,15 @@ class UsersForm extends PureComponent {
             <input type="email" { ...email } className="form-control" />
           </FormGroup>
 
-          {this.renderPasswordFields()}
+          <PasswordFields {...this.props} />
 
           <Button primary type="submit">Submit</Button>
+
+          <div className="pull-xs-right">
+            <Button danger onClick={this.onClickCancelAccount.bind(this)}>
+              Cancel account
+            </Button>
+          </div>
         </form>
       </div>
     );

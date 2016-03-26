@@ -8,6 +8,7 @@ const INITIAL_STATE = { currentUser: null, token: getToken(), errors: [] };
 
 export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
+    case DELETE_USER:
     case SIGNOUT_USER:
       saveToken(null);
       return INITIAL_STATE;
