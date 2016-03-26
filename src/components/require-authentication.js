@@ -1,7 +1,7 @@
 import React from 'react';
 import PureComponent from './pure-component';
 import { connect } from 'react-redux';
-import { getSavedToken } from '../actions/users-actions';
+import { getUser } from '../actions/users-actions';
 
 
 export default function(ComposedComponent) {
@@ -17,10 +17,12 @@ export default function(ComposedComponent) {
 
 
     componentWillMount() {
-      const token = this.props.getSavedToken().payload.token;
-
-      if(!token) {
-        this.goToSignIn();
+      if(this.props.token) {
+        this.props.getUser().then((response) => {
+          if(response.error) {
+            this.goToSignIn();
+          }
+        });
       }
     }
 
@@ -39,7 +41,10 @@ export default function(ComposedComponent) {
 
 
   return connect(
-    (state) => ({ token: state.users.token }),
-    { getSavedToken }
+    (state) => ({
+      token: state.users.token,
+      currentUser: state.users.currentUser
+    }),
+    { getUser }
   )(RequireAuthentication);
 }

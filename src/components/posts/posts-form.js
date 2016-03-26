@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 // very similar to 'connect' from react-redux. It is responsible to map
 // the global state to props
 import { reduxForm, reset } from 'redux-form';
-import { Link } from 'react-router';
 import PureComponent from '../pure-component';
 import FormGroup from '../elements/form-group';
+import Button from '../elements/button';
 import { getPost, updatePost, createPost } from '../../actions/posts-actions';
 import formValidator from '../../validators/posts-form-validator';
 
@@ -83,11 +83,11 @@ class PostsForm extends PureComponent {
           <textarea className="form-control" {...content} />
         </FormGroup>
 
-        <button type="submit"
-                className="btn btn-primary"
-                disabled={this.checkFormValid()}>Submit</button>
+        <Button primary type="submit" disabled={this.checkFormValid()}>
+          Submit
+        </Button>
 
-        <Link to="/" className="btn btn-danger">Cancel</Link>
+        <Button link to="/">Cancel</Button>
       </form>
     );
   }

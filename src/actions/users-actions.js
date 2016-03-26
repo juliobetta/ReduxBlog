@@ -2,67 +2,59 @@ import { api, POST, DELETE, PATCH, GET } from '../utils/api';
 import { getToken } from '../utils';
 
 
-export const CREATE_USER = 'CREATE_USER';
-export const DELETE_USER = 'DELETE_USER';
-export const UPDATE_USER = 'UPDATE_USER';
-export const GET_USER    = 'GET_USER';
-export const AUTH_USER   = 'AUTH_USER';
-export const GET_TOKEN   = 'GET_TOKEN';
+export const CREATE_USER  = 'CREATE_USER';
+export const DELETE_USER  = 'DELETE_USER';
+export const UPDATE_USER  = 'UPDATE_USER';
+export const GET_USER     = 'GET_USER';
+export const SIGNIN_USER  = 'SIGNIN_USER';
+export const SIGNOUT_USER = 'SIGNOUT_USER';
 
 
 export function registerUser(data) {
-  const request = api({ method: POST, uri: 'users', data });
-
   return {
     type: CREATE_USER,
-    payload: request
+    payload: api({ method: POST, uri: 'users', data })
   };
 }
 
 
 export function getUser() {
-  const request = api({ method: GET, uri: 'users/0' });
+  const token = getToken();
 
   return {
     type: GET_USER,
-    payload: request
+    payload: api({ method: GET, uri: 'users/0' })
   };
 }
 
 
 export function signin(data) {
-  const request = api({ method: POST, uri: 'sessions', data });
-
   return {
-    type: AUTH_USER,
-    payload: request
+    type: SIGNIN_USER,
+    payload: api({ method: POST, uri: 'sessions', data })
   };
 }
 
 
-export function getSavedToken() {
+export function signout() {
   return {
-    type: GET_TOKEN,
-    payload: { token: getToken() }
+    type: SIGNOUT_USER,
+    payload: {}
   };
 }
 
 
 export function cancelUser() {
-  const request = api({ method: DELETE, uri: 'users/0' });
-
   return {
     type: DELETE_USER,
-    payload: request
+    payload: api({ method: DELETE, uri: 'users/0' })
   };
 }
 
 
 export function updateUser(data) {
-  const request = api({ method: PATCH, uri: 'users/0', data });
-
   return {
     type: UPDATE_USER,
-    payload: request
+    payload: api({ method: PATCH, uri: 'users/0', data })
   };
 }

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {Link } from 'react-router';
 import PureComponent from '../pure-component';
+import Button from '../elements/button';
 import Loading from '../elements/loading';
 import { getPost, emptyPost, deletePost } from '../../actions/posts-actions';
 
@@ -45,17 +45,12 @@ class PostsForm extends PureComponent {
     return (
       <div>
         <div className="text-xs-right">
-          <Link to={`/posts/edit/${id}`}
-                className="btn btn-primary">
-            Edit Post
-          </Link>
-
-          <button className="btn btn-danger"
-                  onClick={this.onClickDelete.bind(this)}>
+          <Button primary to={`/posts/edit/${id}`}>Edit Post</Button>
+          <Button danger onClick={this.onClickDelete.bind(this)}>
             Delete Post
-          </button>
+          </Button>
         </div>
-        <Link to="/">Back to Posts</Link>
+
         <h3>{title}</h3>
         <h6>{categories}</h6>
         <p>{content}</p>

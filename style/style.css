@@ -1,5 +1,5 @@
-.container {
-  margin: 20px 0;
+.container > main {
+  padding: 60px 15px 0;
 }
 
 a.btn, button.btn {

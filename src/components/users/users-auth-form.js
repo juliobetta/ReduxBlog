@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
 import PureComponent from '../pure-component';
 import FormGroup from '../elements/form-group';
+import Button from '../elements/button';
 import { ERROR } from '../../constants/alert-status';
-import AlertMessage from '../elements/alert-message';
+import Notification from '../elements/notification';
 import formValidator from '../../validators/auth-form-validator';
 import { signin } from '../../actions/users-actions';
 
@@ -37,7 +37,7 @@ class UsersAuthForm extends PureComponent {
 
     return (
       <div className="col-xs-6 col-center">
-        <AlertMessage messages={this.props.alerts} status={ERROR} />
+        <Notification messages={this.props.alerts} status={ERROR} />
 
         <form onSubmit={handleSubmit(this.onSubmitForm.bind(this))}>
           <FormGroup label="Email" field={email}>
@@ -48,8 +48,8 @@ class UsersAuthForm extends PureComponent {
             <input type="password" className="form-control" {...password} />
           </FormGroup>
 
-          <button type="submit" className="btn btn-primary">Sign in</button>
-          <Link to="/" className="btn btn-danger">Cancel</Link>
+          <Button primary type="submit">Sign in</Button>
+          <Button link to="/sign_up">Doesn't have an account?</Button>
         </form>
       </div>
     );

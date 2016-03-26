@@ -19,6 +19,10 @@ const deletePost = (state, id) => {
 
 
 export default function(state = INITIAL_STATE, action) {
+  if(action.payload && action.payload.data && action.payload.data.errors) {
+    return INITIAL_STATE;
+  }
+
   switch(action.type) {
     case EMPTY_POST:  return { ...state, post: null };
     case FETCH_POSTS: return { ...state, all: action.payload.data };

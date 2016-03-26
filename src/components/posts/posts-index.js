@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import PostsItem from './posts-item';
 import PureComponent from '../pure-component';
+import Button from '../elements/button';
 import Loading from '../elements/loading';
 import { fetchPosts, emptyPost } from '../../actions/posts-actions';
 
@@ -16,6 +16,10 @@ class PostsIndex extends PureComponent {
 
 
   render() {
+    if(!this.props.currentUser) {
+      return null;
+    }
+
     if(!this.props.posts) {
       return <Loading />;
     }
@@ -23,13 +27,7 @@ class PostsIndex extends PureComponent {
     return (
       <div>
         <div className="text-xs-right">
-          <Link to="/posts/new" className="btn btn-primary">
-            Add new Post
-          </Link>
-
-          <Link to="/users/edit" className="btn btn-secondary">
-            Edit User
-          </Link>
+          <Button primary to="/posts/new">Add new Post</Button>
         </div>
 
         <h3>Posts</h3>

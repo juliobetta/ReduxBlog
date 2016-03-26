@@ -17,50 +17,40 @@ export function emptyPost() {
 
 
 export function fetchPosts() {
-  const request = api({ method: GET, uri: 'posts' });
-
   return {
     type:    FETCH_POSTS,
-    payload: request
+    payload: api({ method: GET, uri: 'posts' })
   };
 }
 
 
 export function createPost(data) {
-  const request = api({ method: POST, uri: 'posts', data });
-
   return {
     type:    CREATE_POST,
-    payload: request
+    payload: api({ method: POST, uri: 'posts', data })
   };
 }
 
 
 export function getPost(id) {
-  const request = api({ method: GET, uri: `posts/${id}`});
-
   return {
     type:    GET_POST,
-    payload: request
+    payload: api({ method: GET, uri: `posts/${id}`})
   };
 }
 
 
 export function deletePost(id) {
-  const request = api({ method: DELETE, uri: `posts/${id}` });
-
   return {
     type:    DELETE_POST,
-    payload: request
+    payload: api({ method: DELETE, uri: `posts/${id}` })
   };
 }
 
 
 export function updatePost(id, data) {
-  const request = api({ method: PATCH, uri: `posts/${id}`, data });
-
   return {
     type: UPDATE_POST,
-    payload: request
+    payload: api({ method: PATCH, uri: `posts/${id}`, data })
   };
 }

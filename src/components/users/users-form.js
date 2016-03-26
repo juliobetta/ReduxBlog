@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
 import PureComponent from '../pure-component';
 import FormGroup from '../elements/form-group';
 import { ERROR } from '../../constants/alert-status';
-import AlertMessage from '../elements/alert-message';
+import Notification from '../elements/notification';
+import Button from '../elements/button';
 import formValidator from '../../validators/users-form-validator';
-import { registerUser, getUser,
-         updateUser, cancelUser } from '../../actions/users-actions';
+import { registerUser, updateUser,
+         cancelUser } from '../../actions/users-actions';
 import PasswordField from './users-password-field';
 
 
@@ -25,12 +25,6 @@ class UsersForm extends PureComponent {
     router: PropTypes.object
   };
 
-
-  componentWillMount() {
-    if(this.props.token && !this.props.initialValues) {
-      this.props.getUser();
-    }
-  }
 
   onSubmitForm(data) {
     let action = null;
@@ -53,7 +47,7 @@ class UsersForm extends PureComponent {
       fields: { current_password, password, password_confirmation }
     } = this.props;
 
-    const currentPasswordField = this.props.token
+    const currentPasswordField = this.props.currentUser
       ? (
         <PasswordField label="Current Password" field={current_password} />
       ) : null;
@@ -75,7 +69,7 @@ class UsersForm extends PureComponent {
 
     return (
       <div className="col-xs-6 col-center">
-        <AlertMessage messages={this.props.alerts} status={ERROR} />
+        <Notification messages={this.props.alerts} status={ERROR} />
 
         <form onSubmit={handleSubmit(this.onSubmitForm.bind(this))}>
           <FormGroup label="Name" field={name}>
@@ -88,8 +82,7 @@ class UsersForm extends PureComponent {
 
           {this.renderPasswordFields()}
 
-          <button type="submit" className="btn btn-primary">Submit</button>
-          <Link to="/" className="btn btn-danger">Cancel</Link>
+          <Button primary type="submit">Submit</Button>
         </form>
       </div>
     );
@@ -101,9 +94,8 @@ class UsersForm extends PureComponent {
 export default reduxForm(
   reduxFormProperties,
   (state) => ({
-    initialValues: state.users.currentUser || {},
-    token: state.users.token,
+    initialValues: state.users.currentUser || null,
     alerts: state.users.errors
   }),
-  { registerUser, getUser, updateUser, cancelUser }
+  { registerUser, updateUser, cancelUser }
 )(UsersForm);
