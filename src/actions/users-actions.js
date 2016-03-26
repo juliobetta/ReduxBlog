@@ -1,17 +1,17 @@
-import axios from 'axios';
-import { API_URL } from '../constants/common';
-import { embedToken } from '../utils'
+import { api, POST, DELETE, PATCH, GET } from '../utils/api';
+import { getToken } from '../utils';
 
 
 export const CREATE_USER = 'CREATE_USER';
 export const DELETE_USER = 'DELETE_USER';
 export const UPDATE_USER = 'UPDATE_USER';
+export const GET_USER    = 'GET_USER';
 export const AUTH_USER   = 'AUTH_USER';
+export const GET_TOKEN   = 'GET_TOKEN';
 
 
-export function register(data) {
-  const url     = `${API_URL}/users`;
-  const request = axios.post(url, data);
+export function registerUser(data) {
+  const request = api({ method: POST, uri: 'users', data });
 
   return {
     type: CREATE_USER,
@@ -20,9 +20,18 @@ export function register(data) {
 }
 
 
+export function getUser() {
+  const request = api({ method: GET, uri: 'users/0' });
+
+  return {
+    type: GET_USER,
+    payload: request
+  };
+}
+
+
 export function signin(data) {
-  const url     = `${API_URL}/sessions`;
-  const request = axios.post(url, data);
+  const request = api({ method: POST, uri: 'sessions', data });
 
   return {
     type: AUTH_USER,
@@ -31,9 +40,16 @@ export function signin(data) {
 }
 
 
-export function cancel(token = null) {
-  const url     = `${API_URL}/users/0`;
-  const request = axios.delete(url, embedToken(token));
+export function getSavedToken() {
+  return {
+    type: GET_TOKEN,
+    payload: { token: getToken() }
+  };
+}
+
+
+export function cancelUser() {
+  const request = api({ method: DELETE, uri: 'users/0' });
 
   return {
     type: DELETE_USER,
@@ -42,9 +58,8 @@ export function cancel(token = null) {
 }
 
 
-export function update(data, token = null) {
-  const url     = `${API_URL}/users/0`;
-  const request = axios.patch(url, data, embedToken(token));
+export function updateUser(data) {
+  const request = api({ method: PATCH, uri: 'users/0', data });
 
   return {
     type: UPDATE_USER,

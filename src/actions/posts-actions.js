@@ -1,6 +1,4 @@
-import axios from 'axios';
-import { API_URL } from '../constants/common';
-import { embedToken } from '../utils';
+import { api, GET, POST, PATCH, DELETE } from '../utils/api';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';
@@ -18,9 +16,8 @@ export function emptyPost() {
 }
 
 
-export function fetchPosts(token = null) {
-  const url     = `${API_URL}/posts`;
-  const request = axios.get(url, embedToken(token));
+export function fetchPosts() {
+  const request = api({ method: GET, uri: 'posts' });
 
   return {
     type:    FETCH_POSTS,
@@ -29,9 +26,8 @@ export function fetchPosts(token = null) {
 }
 
 
-export function createPost(data, token = null) {
-  const url     = `${API_URL}/posts`;
-  const request = axios.post(url, data, embedToken(token));
+export function createPost(data) {
+  const request = api({ method: POST, uri: 'posts', data });
 
   return {
     type:    CREATE_POST,
@@ -40,9 +36,8 @@ export function createPost(data, token = null) {
 }
 
 
-export function getPost(id, token = null) {
-  const url     = `${API_URL}/posts/${id}`;
-  const request = axios.get(url, embedToken(token));
+export function getPost(id) {
+  const request = api({ method: GET, uri: `posts/${id}`});
 
   return {
     type:    GET_POST,
@@ -51,9 +46,8 @@ export function getPost(id, token = null) {
 }
 
 
-export function deletePost(id, token = null) {
-  const url     = `${API_URL}/posts/${id}`;
-  const request = axios.delete(url, embedToken(token));
+export function deletePost(id) {
+  const request = api({ method: DELETE, uri: `posts/${id}` });
 
   return {
     type:    DELETE_POST,
@@ -62,9 +56,8 @@ export function deletePost(id, token = null) {
 }
 
 
-export function updatePost(id, data, token = null) {
-  const url     = `${API_URL}/posts/${id}`;
-  const request = axios.patch(url, data, embedToken(token));
+export function updatePost(id, data) {
+  const request = api({ method: PATCH, uri: `posts/${id}`, data });
 
   return {
     type: UPDATE_POST,

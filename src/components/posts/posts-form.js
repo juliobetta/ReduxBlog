@@ -27,7 +27,11 @@ class PostsForm extends PureComponent {
 
   componentWillMount() {
     if(this.isUpdateForm()) {
-      this.props.getPost(this.props.params.id, this.props.token);
+      this.props.getPost(this.props.params.id).then((response) => {
+        if(response.payload.status !== 200) {
+          this.context.router.push('/sign_in');
+        }
+      });
     }
   }
 
@@ -50,12 +54,10 @@ class PostsForm extends PureComponent {
   onSubmitForm(data) {
     let action = null;
 
-    const { token } = this.props;
-
     if(this.isUpdateForm()) {
-      action = this.props.updatePost(this.props.params.id, data, token);
+      action = this.props.updatePost(this.props.params.id, data);
     } else {
-      action = this.props.createPost(data, token);
+      action = this.props.createPost(data);
     }
 
     action.then(() => this.context.router.push('/') );

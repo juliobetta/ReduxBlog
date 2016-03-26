@@ -17,9 +17,11 @@ class PostsForm extends PureComponent {
 
   componentWillMount() {
     this.props.emptyPost();
-    if(this.props.token) {
-      this.props.getPost(this.props.params.id, this.props.token);
-    }
+    this.props.getPost(this.props.params.id).then((response) => {
+      if(response.payload.status !== 200) {
+        this.context.router.push('/sign_in');
+      }
+    });
   }
 
 
@@ -27,7 +29,7 @@ class PostsForm extends PureComponent {
     event.preventDefault();
 
     if(confirm('Are you sure?')) {
-      this.props.deletePost(this.props.params.id, this.props.token)
+      this.props.deletePost(this.props.params.id)
         .then(() => this.context.router.push('/') );
     }
   }

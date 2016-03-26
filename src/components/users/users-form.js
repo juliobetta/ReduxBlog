@@ -6,7 +6,8 @@ import FormGroup from '../elements/form-group';
 import { ERROR } from '../../constants/alert-status';
 import AlertMessage from '../elements/alert-message';
 import formValidator from '../../validators/users-form-validator';
-import { register, update, cancel } from '../../actions/users-actions';
+import { registerUser, getUser,
+         updateUser, cancelUser } from '../../actions/users-actions';
 import PasswordField from './users-password-field';
 
 
@@ -25,12 +26,18 @@ class UsersForm extends PureComponent {
   };
 
 
+  componentWillMount() {
+    if(this.props.token && !this.props.initialValues) {
+      this.props.getUser();
+    }
+  }
+
   onSubmitForm(data) {
     let action = null;
     if(this.props.token) {
-      action = this.props.update(data, this.props.token);
+      action = this.props.updateUser(data);
     } else {
-      action = this.props.register(data);
+      action = this.props.registerUser(data);
     }
 
     action.then((response) => {
@@ -98,5 +105,5 @@ export default reduxForm(
     token: state.users.token,
     alerts: state.users.errors
   }),
-  { register, update, cancel }
+  { registerUser, getUser, updateUser, cancelUser }
 )(UsersForm);

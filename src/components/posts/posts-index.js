@@ -11,9 +11,7 @@ class PostsIndex extends PureComponent {
 
   componentWillMount() {
     this.props.emptyPost();
-    if(this.props.token) {
-      this.props.fetchPosts(this.props.token);
-    }
+    this.props.fetchPosts();
   }
 
 
