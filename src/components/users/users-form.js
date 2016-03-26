@@ -79,7 +79,8 @@ class UsersForm extends PureComponent {
           <Button primary type="submit">Submit</Button>
 
           <div className="pull-xs-right">
-            <Button danger onClick={this.onClickCancelAccount.bind(this)}>
+            <Button danger isHidden={this.props.currentUser === undefined}
+                           onClick={this.onClickCancelAccount.bind(this)}>
               Cancel account
             </Button>
           </div>

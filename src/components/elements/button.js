@@ -11,7 +11,11 @@ export default (props = {}) => {
     return availableTypes.includes(k);
   }).map((type) => `btn-${type}`);
 
-  const classes = classNames(['btn', ...buttonClasses]);
+  console.log(props.isHidden);
+
+  const classes = classNames(['btn', ...buttonClasses], {
+    hidden: props.isHidden
+  });
 
   if(props.to) {
     return (
