@@ -1,7 +1,7 @@
-import React from 'react';
+import React         from 'react';
 import PureComponent from './pure-component';
-import { connect } from 'react-redux';
-import { getUser } from '../actions/users-actions';
+import { connect }   from 'react-redux';
+import { getUser }   from '../actions/users-actions';
 
 
 export default function(ComposedComponent) {

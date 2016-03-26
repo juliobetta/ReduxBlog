@@ -1,18 +1,18 @@
 import React, { PropTypes } from 'react';
-import { reduxForm } from 'redux-form';
-import PureComponent from '../pure-component';
-import FormGroup from '../elements/form-group';
-import Button from '../elements/button';
-import { ERROR } from '../../constants/alert-status';
-import Notification from '../elements/notification';
-import formValidator from '../../validators/auth-form-validator';
-import { signin } from '../../actions/users-actions';
+import { reduxForm }        from 'redux-form';
+import PureComponent        from '../pure-component';
+import FormGroup            from '../elements/form-group';
+import Button               from '../elements/button';
+import Notification         from '../elements/notification';
+import { ERROR }            from '../../constants/alert-status';
+import validate             from '../../validators/auth-form-validator';
+import { signin }           from '../../actions/users-actions';
 
 
 const reduxFormProperties = {
   form: 'UsersAuthForm', // the key should match the reducer name
   fields: ['email', 'password'],
-  formValidator
+  validate
 };
 
 
@@ -33,7 +33,8 @@ class UsersAuthForm extends PureComponent {
 
 
   render() {
-    const { fields: { email, password }, handleSubmit } = this.props;
+    const { invalid, handleSubmit, submitting, } = this.props;
+    const { fields: { email, password } } = this.props;
 
     return (
       <div className="col-xs-6 col-center">
@@ -48,7 +49,9 @@ class UsersAuthForm extends PureComponent {
             <input type="password" className="form-control" {...password} />
           </FormGroup>
 
-          <Button primary type="submit">Sign in</Button>
+          <Button primary type="submit" disabled={submitting || invalid}>
+            Sign in
+          </Button>
           <Button link to="/sign_up">Doesn't have an account?</Button>
         </form>
       </div>

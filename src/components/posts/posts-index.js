@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PostsItem from './posts-item';
-import PureComponent from '../pure-component';
-import Button from '../elements/button';
-import Loading from '../elements/loading';
+import React                     from 'react';
+import { connect }               from 'react-redux';
+import PostsItem                 from './posts-item';
+import PureComponent             from '../pure-component';
+import Button                    from '../elements/button';
+import Loading                   from '../elements/loading';
 import { fetchPosts, emptyPost } from '../../actions/posts-actions';
 
 

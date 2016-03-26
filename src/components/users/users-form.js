@@ -1,21 +1,21 @@
-import React, { PropTypes } from 'react';
-import { reduxForm } from 'redux-form';
-import PureComponent from '../pure-component';
-import { ERROR } from '../../constants/alert-status';
-import PasswordFields from './users-passwords-fields';
-import Notification from '../elements/notification';
-import FormGroup from '../elements/form-group';
-import Button from '../elements/button';
-import formValidator from '../../validators/users-form-validator';
+import React, { PropTypes }  from 'react';
+import { reduxForm }         from 'redux-form';
+import PasswordFields        from './users-passwords-fields';
+import PureComponent         from '../pure-component';
+import Notification          from '../elements/notification';
+import FormGroup             from '../elements/form-group';
+import Button                from '../elements/button';
+import { ERROR }             from '../../constants/alert-status';
+import validate              from '../../validators/users-form-validator';
 import { registerUser, updateUser,
-         cancelUser } from '../../actions/users-actions';
+          cancelUser } from '../../actions/users-actions';
 
 
 const reduxFormProperties = {
   form: 'UsersForm', // the key should match the reducer name
   fields: ['email', 'name', 'password', 'password_confirmation',
            'current_password'],
-  formValidator
+  validate
 };
 
 
@@ -58,7 +58,7 @@ class UsersForm extends PureComponent {
 
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, submitting, invalid } = this.props;
     const { fields: { name, email } } = this.props;
 
     return (
@@ -76,7 +76,9 @@ class UsersForm extends PureComponent {
 
           <PasswordFields {...this.props} />
 
-          <Button primary type="submit">Submit</Button>
+          <Button primary type="submit" disabled={submitting || invalid}>
+            Submit
+          </Button>
 
           <div className="pull-xs-right">
             <Button danger isHidden={this.props.currentUser === undefined}

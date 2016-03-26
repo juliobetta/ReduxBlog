@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { signout } from '../actions/users-actions';
-import PureComponent from './pure-component';
-import NavBar from './elements/navbar';
-import NavBarBrand from './elements/navbar-brand';
-import NavBarItem from './elements/navbar-item';
+import { connect }          from 'react-redux';
+import PureComponent        from './pure-component';
+import NavBar               from './elements/navbar';
+import NavBarBrand          from './elements/navbar-brand';
+import NavBarItem           from './elements/navbar-item';
+import { signout }          from '../actions/users-actions';
 
 
 class AppNavBar extends PureComponent {

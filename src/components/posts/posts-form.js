@@ -5,13 +5,13 @@ import FormGroup from '../elements/form-group';
 import FormField from '../elements/form-field';
 import Button from '../elements/button';
 import { getPost, updatePost, createPost } from '../../actions/posts-actions';
-import formValidator from '../../validators/posts-form-validator';
+import validate from '../../validators/posts-form-validator';
 
 
 const reduxFormProperties = {
   form: 'PostsForm', // the key should match the reducer name
   fields: ['title', 'categories', 'content'],
-  formValidator
+  validate
 };
 
 
@@ -96,8 +96,6 @@ class PostsForm extends PureComponent {
 
 export default reduxForm(
   reduxFormProperties,
-  (state) => ({
-    initialValues: state.posts.post
-  }),
+  (state) => ({ initialValues: state.posts.post }),
   { getPost, updatePost, createPost }
 )(PostsForm);

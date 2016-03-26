@@ -1,5 +1,4 @@
 import { api, POST, DELETE, PATCH, GET } from '../utils/api';
-import { getToken } from '../utils';
 
 
 export const CREATE_USER  = 'CREATE_USER';
@@ -19,8 +18,6 @@ export function registerUser(data) {
 
 
 export function getUser() {
-  const token = getToken();
-
   return {
     type: GET_USER,
     payload: api({ method: GET, uri: 'users/0' })

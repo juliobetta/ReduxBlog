@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux';
-import PostsReducer from './posts-reducer';
-import UsersReducer from './users-reducer';
+import { combineReducers }        from 'redux';
 import { reducer as formReducer } from 'redux-form';
+import PostsReducer               from './posts-reducer';
+import UsersReducer               from './users-reducer';
 
 
 const rootReducer = combineReducers({

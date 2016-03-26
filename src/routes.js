@@ -1,12 +1,12 @@
-import React from 'react';
+import React                 from 'react';
 import { Route, IndexRoute } from 'react-router';
-import App from './components/app';
-import RequireAuth from './components/require-authentication';
-import PostsIndex from './components/posts/posts-index';
-import PostsForm from './components/posts/posts-form';
-import PostsShow from './components/posts/posts-show';
-import UsersAuthForm from './components/users/users-auth-form';
-import UsersForm from './components/users/users-form';
+import App                   from './components/app';
+import RequireAuth           from './components/require-authentication';
+import PostsIndex            from './components/posts/posts-index';
+import PostsForm             from './components/posts/posts-form';
+import PostsShow             from './components/posts/posts-show';
+import UsersAuthForm         from './components/users/users-auth-form';
+import UsersForm             from './components/users/users-form';
 
 
 export default (

@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import PureComponent from '../pure-component';
-import Button from '../elements/button';
-import Loading from '../elements/loading';
-import { getPost, emptyPost, deletePost } from '../../actions/posts-actions';
+import { connect }          from 'react-redux';
+import PureComponent        from '../pure-component';
+import Button               from '../elements/button';
+import Loading              from '../elements/loading';
+import { getPost, emptyPost,
+         deletePost } from '../../actions/posts-actions';
 
 
 class PostsForm extends PureComponent {

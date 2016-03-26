@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import shallowEqual from 'react-pure-render/shallowEqual';
+import shallowEqual         from 'react-pure-render/shallowEqual';
 
 
 // https://www.toptal.com/react/react-redux-and-immutablejs

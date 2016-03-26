@@ -1,4 +1,4 @@
-import React from 'react';
+import React     from 'react';
 import FormField from '../elements/form-field';
 import FormGroup from '../elements/form-group';
 

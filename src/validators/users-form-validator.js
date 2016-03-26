@@ -16,6 +16,9 @@ export default function(values) {
     errors.email = 'Invalid email address';
   }
 
+  if(values.password && values.password_confirmation !== values.password) {
+    errors.password_confirmation = 'Confirmation doesn\'t match'
+  }
 
   return errors;
 }

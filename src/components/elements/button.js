@@ -1,6 +1,6 @@
-import React from 'react';
+import React      from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router';
+import { Link }   from 'react-router';
 
 
 export default (props = {}) => {
@@ -10,8 +10,6 @@ export default (props = {}) => {
   const buttonClasses = Object.keys(props).filter((k) => {
     return availableTypes.includes(k);
   }).map((type) => `btn-${type}`);
-
-  console.log(props.isHidden);
 
   const classes = classNames(['btn', ...buttonClasses], {
     hidden: props.isHidden

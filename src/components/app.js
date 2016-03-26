@@ -1,7 +1,7 @@
-import React from 'react';
+import React         from 'react';
 import PureComponent from './pure-component';
-import AppNavBar from './app-navbar';
-import Container from './elements/container';
+import AppNavBar     from './app-navbar';
+import Container     from './elements/container';
 
 
 class App extends PureComponent {

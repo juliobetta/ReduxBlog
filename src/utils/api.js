@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios          from 'axios';
 import { embedToken } from './index';
 
 export const API_URL = 'http://0.0.0.0:3000/api';
