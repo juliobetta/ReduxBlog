@@ -1,7 +1,7 @@
 import axios          from 'axios';
 import { embedToken } from './index';
 
-export const API_URL = 'http://0.0.0.0:3000/api';
+export const API_URL = 'http://reduxblogserver.herokuapp.com/api';
 export const GET     = 'get';
 export const POST    = 'post';
 export const PATCH   = 'patch';
