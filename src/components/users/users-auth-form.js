@@ -32,7 +32,7 @@ class UsersAuthForm extends PureComponent {
 
 
   render() {
-    const { invalid, handleSubmit, submitting, } = this.props;
+    const { invalid, handleSubmit, submitting } = this.props;
     const { fields: { email, password } } = this.props;
 
     return (
