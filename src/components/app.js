@@ -1,7 +1,8 @@
-import React         from 'react';
-import PureComponent from './pure-component';
-import AppNavBar     from './app-navbar';
-import Container     from './elements/container';
+import React            from 'react';
+import PureComponent    from './pure-component';
+import AppNavBar        from './app-navbar';
+import AppNotifications from './app-notifications';
+import Container        from './elements/container';
 
 
 class App extends PureComponent {
@@ -12,6 +13,7 @@ class App extends PureComponent {
 
         <Container>
           <main>
+            <AppNotifications />
             {this.props.children}
           </main>
         </Container>

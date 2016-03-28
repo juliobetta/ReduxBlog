@@ -2,7 +2,6 @@ import React, { PropTypes }  from 'react';
 import { reduxForm }         from 'redux-form';
 import PasswordFields        from './users-passwords-fields';
 import PureComponent         from '../pure-component';
-import Notification          from '../elements/notification';
 import FormGroup             from '../elements/form-group';
 import Button                from '../elements/button';
 import { ERROR }             from '../../constants/alert-status';
@@ -63,8 +62,6 @@ class UsersForm extends PureComponent {
 
     return (
       <div className="col-xs-6 col-center">
-        <Notification messages={this.props.alerts} status={ERROR} />
-
         <form onSubmit={handleSubmit(this.onSubmitForm.bind(this))}>
           <FormGroup label="Name" field={name}>
             <input type="text" { ...name } className="form-control" />

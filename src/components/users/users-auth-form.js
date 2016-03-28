@@ -3,7 +3,6 @@ import { reduxForm }        from 'redux-form';
 import PureComponent        from '../pure-component';
 import FormGroup            from '../elements/form-group';
 import Button               from '../elements/button';
-import Notification         from '../elements/notification';
 import { ERROR }            from '../../constants/alert-status';
 import validate             from '../../validators/auth-form-validator';
 import { signin }           from '../../actions/users-actions';
@@ -38,8 +37,6 @@ class UsersAuthForm extends PureComponent {
 
     return (
       <div className="col-xs-6 col-center">
-        <Notification messages={this.props.alerts} status={ERROR} />
-
         <form onSubmit={handleSubmit(this.onSubmitForm.bind(this))}>
           <FormGroup label="Email" field={email}>
             <input type="email" className="form-control" {...email} />
@@ -63,6 +60,6 @@ class UsersAuthForm extends PureComponent {
 
 export default reduxForm(
   reduxFormProperties,
-  (state) => ({ alerts: state.users.errors }),
+  (state) => ({}),
   { signin }
 )(UsersAuthForm);

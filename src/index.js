@@ -7,13 +7,17 @@ import { Router, browserHistory }       from 'react-router';
 import promise                          from 'redux-promise';
 import routes                           from './routes';
 import reducers                         from './reducers';
+import { EMPTY_NOTIFICATIONS }          from './constants';
 
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const store = applyMiddleware(promise)(createStore)(reducers);
+
+
+browserHistory.listen(() => store.dispatch({ type: EMPTY_NOTIFICATIONS }));
 
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={store}>
     <Router history={browserHistory} routes={routes} />
   </Provider>
   , document.getElementById('app'));
