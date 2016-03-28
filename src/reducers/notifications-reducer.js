@@ -16,7 +16,7 @@ export default function(state = INITIAL_STATE, action)  {
         ...state,
         messages:   action.payload.data.errors || [],
         statusCode: action.payload.status || null,
-        error:      action.payload.data.errors.length > 0
+        error:      action.payload.data.errors !== undefined
       };
   }
 }
