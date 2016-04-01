@@ -18,11 +18,7 @@ class PostsForm extends PureComponent {
 
   componentWillMount() {
     this.props.emptyPost();
-    this.props.getPost(this.props.params.id).then((response) => {
-      if(response.payload.status !== 200) {
-        this.context.router.push('/sign_in');
-      }
-    });
+    this.props.getPost(this.props.params.id);
   }
 
 

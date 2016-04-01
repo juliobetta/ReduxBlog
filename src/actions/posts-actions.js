@@ -1,4 +1,6 @@
-import { api, GET, POST, PATCH, DELETE } from '../utils/api';
+import * as API           from '../utils/local-api';
+import { POSTS_RESOURCE } from '../utils/database-schema';
+
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';
@@ -19,7 +21,7 @@ export function emptyPost() {
 export function fetchPosts() {
   return {
     type:    FETCH_POSTS,
-    payload: api({ method: GET, uri: 'posts' })
+    payload: API.fetchAll({ resource: POSTS_RESOURCE })
   };
 }
 
@@ -27,7 +29,7 @@ export function fetchPosts() {
 export function createPost(data) {
   return {
     type:    CREATE_POST,
-    payload: api({ method: POST, uri: 'posts', data })
+    payload: API.create({ resource: POSTS_RESOURCE, data })
   };
 }
 
@@ -35,7 +37,7 @@ export function createPost(data) {
 export function getPost(id) {
   return {
     type:    GET_POST,
-    payload: api({ method: GET, uri: `posts/${id}`})
+    payload: API.fetchOne({ resource: POSTS_RESOURCE, params: { id } })
   };
 }
 
@@ -43,14 +45,16 @@ export function getPost(id) {
 export function deletePost(id) {
   return {
     type:    DELETE_POST,
-    payload: api({ method: DELETE, uri: `posts/${id}` })
+    payload: API.destroy({ resource: POSTS_RESOURCE, params: { id } })
   };
 }
 
 
 export function updatePost(id, data) {
+  data = { ...data, id };
+
   return {
-    type: UPDATE_POST,
-    payload: api({ method: PATCH, uri: `posts/${id}`, data })
+    type:    UPDATE_POST,
+    payload: API.update({ resource: POSTS_RESOURCE, params: { id }, data })
   };
 }

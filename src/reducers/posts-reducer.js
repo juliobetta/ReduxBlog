@@ -19,17 +19,17 @@ const deletePost = (state, id) => {
 
 
 export default function(state = INITIAL_STATE, action) {
-  if(action.payload && action.payload.data && action.payload.data.errors) {
+  if(action.payload && action.payload.errors) {
     return INITIAL_STATE;
   }
 
   switch(action.type) {
     case EMPTY_POST:  return { ...state, post: null };
-    case FETCH_POSTS: return { ...state, all: action.payload.data };
-    case GET_POST:    return { ...state, post: action.payload.data };
+    case FETCH_POSTS: return { ...state, all: action.payload };
+    case GET_POST:    return { ...state, post: action.payload };
 
     case UPDATE_POST:
-    return { ...state, all: updatePost(state, action.payload.data) };
+    return { ...state, all: updatePost(state, action.payload) };
 
     case DELETE_POST:
     return { ...state, all: deletePost(state, action.payload.id) };
