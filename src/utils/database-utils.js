@@ -1,4 +1,4 @@
-import { conditions } from './database-schema';
+import { conditions, orderDirections } from './database-schema';
 
 
 /**
@@ -32,11 +32,15 @@ export const generateId = () => {
  *   val: ['gt', 2]
  * }
  * @param  {Lovefield.Table} table
- * @param  {Object} params = null
+ * @param  {Object} params
  * @return {Object}
  */
-export const extractConditionsWith = (table, params = null) => {
-  if(!params || typeof params !== 'object') {
+export const extractConditionsWith = (table, params) => {
+  if(typeof params !== 'object') {
+    return null;
+  }
+
+  if(Object.entries(params).length === 0) {
     return null;
   }
 
@@ -70,8 +74,40 @@ export const extractUpdatesWith = (scope, table, data = null) => {
     scope.set(table[key], value);
   }
 
+  if(table.updated_at) {
+    scope.set(table.updated_at, +new Date());
+  }
+
   return scope;
-}
+};
+
+
+/**
+ * Extract query options.
+ * Example:
+ * const options = {
+ *   orderBy: [
+ *     ['id', orderDirections.DESC],
+ *     ['created_at'] // ASC by default
+ *   ]
+ * }
+ * @param  {Lovefield.Scope} scope
+ * @param  {Lovefield.Table} table
+ * @param  {Object} { orderBy = [] }
+ * @return {Lovefeld.Scope}
+ */
+export const extractOptionsWith = (scope, table, { orderBy = [] }) => {
+  if(orderBy.length) {
+    let field, dir;
+    for([field, dir] of orderBy) {
+      dir = dir === undefined ? orderDirections.ASC : dir;
+      scope.orderBy(table[field], dir);
+    }
+  }
+
+  return scope;
+};
+
 
 /**
  * Fill out data with default values

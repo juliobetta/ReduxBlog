@@ -1,4 +1,6 @@
-import { api, POST, DELETE, PATCH, GET } from '../utils/api';
+import { webApi, POST, DELETE, PATCH, GET } from '../utils/web-api';
+import { create, destroy, fetchOne }        from '../utils/local-api';
+import { USERS_RESOURCE }                   from '../utils/database-schema';
 
 
 export const CREATE_USER  = 'CREATE_USER';
@@ -9,10 +11,25 @@ export const SIGNIN_USER  = 'SIGNIN_USER';
 export const SIGNOUT_USER = 'SIGNOUT_USER';
 
 
+/**
+ * Create User on local api and resolve the data
+ * @param  {Object} { data }
+ * @return {Promise}
+ */
+const createAndResolveCurrentUser = ({ data }) => {
+  return create({
+    resource: USERS_RESOURCE,
+    data: { current_user: data }
+  }).then((result) => Promise.resolve(result.current_user));
+};
+
+
 export function registerUser(data) {
   return {
     type: CREATE_USER,
-    payload: api({ method: POST, uri: 'users', data })
+    payload: webApi({ method: POST, uri: 'users', data }).then((response) => {
+      return createAndResolveCurrentUser(response);
+    })
   };
 }
 
@@ -20,7 +37,9 @@ export function registerUser(data) {
 export function getUser() {
   return {
     type: GET_USER,
-    payload: api({ method: GET, uri: 'users/0' })
+    payload: fetchOne({ resource: USERS_RESOURCE }).then((result) => {
+      return Promise.resolve(result.current_user);
+    })
   };
 }
 
@@ -28,7 +47,11 @@ export function getUser() {
 export function signin(data) {
   return {
     type: SIGNIN_USER,
-    payload: api({ method: POST, uri: 'sessions', data })
+    payload: webApi({ method: POST, uri: 'sessions', data }).then((response) => {
+      return destroy({ resource: USERS_RESOURCE }).then(() => {
+        return createAndResolveCurrentUser(response);
+      });
+    })
   };
 }
 
@@ -36,7 +59,7 @@ export function signin(data) {
 export function signout() {
   return {
     type: SIGNOUT_USER,
-    payload: {}
+    payload: destroy({ resource: USERS_RESOURCE })
   };
 }
 
@@ -44,7 +67,7 @@ export function signout() {
 export function cancelUser() {
   return {
     type: DELETE_USER,
-    payload: api({ method: DELETE, uri: 'users/0' })
+    payload: webApi({ method: DELETE, uri: 'users/0' })
   };
 }
 
@@ -52,6 +75,6 @@ export function cancelUser() {
 export function updateUser(data) {
   return {
     type: UPDATE_USER,
-    payload: api({ method: PATCH, uri: 'users/0', data })
+    payload: webApi({ method: PATCH, uri: 'users/0', data })
   };
 }

@@ -17,17 +17,11 @@ export default function(ComposedComponent) {
 
 
     componentWillMount() {
-      if(!this.props.token) {
-        this.goToSignIn();
-      }
-
-      if(this.props.token && !this.props.currentUser) {
-        this.props.getUser().then((response) => {
-          if(response.error) {
-            this.goToSignIn();
-          }
-        });
-      }
+      this.props.getUser().then((response) => {
+        if(response.error) {
+          this.goToSignIn();
+        }
+      });
     }
 
 

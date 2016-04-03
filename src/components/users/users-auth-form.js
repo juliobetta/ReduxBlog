@@ -24,7 +24,7 @@ class UsersAuthForm extends PureComponent {
 
   onSubmitForm(props) {
     this.props.signin(props).then((response) => {
-      if(response.payload.status === 200) {
+      if(!response.error) {
         this.context.router.push('/');
       }
     });

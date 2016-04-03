@@ -1,5 +1,5 @@
 import * as API           from '../utils/local-api';
-import { POSTS_RESOURCE } from '../utils/database-schema';
+import { POSTS_RESOURCE, orderDirections } from '../utils/database-schema';
 
 
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -21,15 +21,14 @@ export function emptyPost() {
 export function fetchPosts() {
   return {
     type:    FETCH_POSTS,
-    payload: API.fetchAll({ resource: POSTS_RESOURCE })
-  };
-}
-
-
-export function createPost(data) {
-  return {
-    type:    CREATE_POST,
-    payload: API.create({ resource: POSTS_RESOURCE, data })
+    payload: API.fetchAll({
+      resource: POSTS_RESOURCE,
+      options: {
+        orderBy: [
+          ['created_at', orderDirections.DESC]
+        ]
+      }
+    })
   };
 }
 
@@ -38,6 +37,14 @@ export function getPost(id) {
   return {
     type:    GET_POST,
     payload: API.fetchOne({ resource: POSTS_RESOURCE, params: { id } })
+  };
+}
+
+
+export function createPost(data) {
+  return {
+    type:    CREATE_POST,
+    payload: API.create({ resource: POSTS_RESOURCE, data })
   };
 }
 
@@ -51,8 +58,6 @@ export function deletePost(id) {
 
 
 export function updatePost(id, data) {
-  data = { ...data, id };
-
   return {
     type:    UPDATE_POST,
     payload: API.update({ resource: POSTS_RESOURCE, params: { id }, data })

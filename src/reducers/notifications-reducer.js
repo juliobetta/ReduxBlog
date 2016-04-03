@@ -8,7 +8,9 @@ export default function(state = INITIAL_STATE, action)  {
     case EMPTY_NOTIFICATIONS: return INITIAL_STATE;
 
     default:
-      if(action.payload === undefined || action.payload.data === undefined) {
+      if(!action.payload || action.payload === undefined
+                         || action.payload.data === undefined)
+      {
         return state;
       }
 
