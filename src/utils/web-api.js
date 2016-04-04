@@ -1,14 +1,10 @@
-import axios          from 'axios';
-import { fetchOne } from './local-api';
+import axios              from 'axios';
+import { fetchOne }       from './local-api';
 import { USERS_RESOURCE } from './database-schema';
 
 
 export const API_HOST = 'http://reduxblogserver.herokuapp.com';
 export const API_URL  = `${API_HOST}/api`;
-export const GET      = 'get';
-export const POST     = 'post';
-export const PATCH    = 'patch';
-export const DELETE   = 'delete';
 
 
 /**

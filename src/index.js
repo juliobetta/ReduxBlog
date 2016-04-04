@@ -9,9 +9,9 @@ import promise                          from 'redux-promise';
 import routes                           from './routes';
 import reducers                         from './reducers';
 import { EMPTY_NOTIFICATIONS }          from './constants';
+import log from './middlewares/log';
 
-
-const store = applyMiddleware(promise)(createStore)(reducers);
+const store = applyMiddleware(log, promise)(createStore)(reducers);
 
 
 // Alternatively, we can use browserHistory or memoryHistory

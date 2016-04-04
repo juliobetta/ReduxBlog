@@ -1,6 +1,6 @@
-import * as API           from '../utils/local-api';
+import * as API                            from '../utils/local-api';
 import { POSTS_RESOURCE, orderDirections } from '../utils/database-schema';
-
+import { POST, PATCH, DELETE }             from '../constants/http-methods';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';
@@ -20,7 +20,7 @@ export function emptyPost() {
 
 export function fetchPosts() {
   return {
-    type:    FETCH_POSTS,
+    type: FETCH_POSTS,
     payload: API.fetchAll({
       resource: POSTS_RESOURCE,
       options: {
@@ -43,7 +43,8 @@ export function getPost(id) {
 
 export function createPost(data) {
   return {
-    type:    CREATE_POST,
+    type: CREATE_POST,
+    log: { type: POST, resource: POSTS_RESOURCE },
     payload: API.create({ resource: POSTS_RESOURCE, data })
   };
 }
@@ -51,7 +52,8 @@ export function createPost(data) {
 
 export function deletePost(id) {
   return {
-    type:    DELETE_POST,
+    type: DELETE_POST,
+    log: { type: DELETE, resource: POSTS_RESOURCE },
     payload: API.destroy({ resource: POSTS_RESOURCE, params: { id } })
   };
 }
@@ -59,7 +61,8 @@ export function deletePost(id) {
 
 export function updatePost(id, data) {
   return {
-    type:    UPDATE_POST,
+    type: UPDATE_POST,
+    log: { type: PATCH, resource: POSTS_RESOURCE },
     payload: API.update({ resource: POSTS_RESOURCE, params: { id }, data })
   };
 }

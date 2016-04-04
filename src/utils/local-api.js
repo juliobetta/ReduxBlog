@@ -1,6 +1,23 @@
-import { schema, orderDirections } from './database-schema';
+import { schema, orderDirections, CHANGES_RESOURCE } from './database-schema';
 import { generateId, extractConditionsWith, extractUpdatesWith,
          extractOptionsWith, defaults } from './database-utils';
+import { POST, PATCH, DELETE } from '../constants/http-methods';
+
+
+export const logChange = ({ type, resource, data }) => {
+  return schema.then((database) => {
+    const attrs = { type, data, resource };
+
+    if(data.id) {
+      attrs.resource_id = data.id;
+    }
+
+    const table = database.getSchema().table(CHANGES_RESOURCE);
+    const row   = table.createRow(defaults(table, attrs));
+
+    return database.insert().into(table).values([row]).exec();
+  });
+};
 
 
 export const fetchAll = ({ resource, params = {}, options = {} }) => {
@@ -41,6 +58,7 @@ export const create = ({ resource, data }) => {
           return Promise.reject();
         }
 
+
         return Promise.resolve(result[0]);
       }
     );
@@ -70,9 +88,10 @@ export const update = ({ resource, data, params = {} }) => {
       data = { ...data, id: params.id };
     }
 
-    return extractUpdatesWith(scope, table, data)
-            .where(conditions)
-            .exec()
-            .then(() => Promise.resolve(data));
+    return extractUpdatesWith(scope, table, data).where(conditions).exec().then(
+      () => {
+        return Promise.resolve(data);
+      }
+    );
   });
 };

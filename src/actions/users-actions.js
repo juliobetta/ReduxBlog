@@ -1,6 +1,7 @@
-import { webApi, POST, DELETE, PATCH, GET } from '../utils/web-api';
-import { create, destroy, fetchOne }        from '../utils/local-api';
-import { USERS_RESOURCE }                   from '../utils/database-schema';
+import { webApi }                    from '../utils/web-api';
+import { POST, DELETE, PATCH, GET }  from '../constants/http-methods';
+import { create, destroy, fetchOne } from '../utils/local-api';
+import { USERS_RESOURCE }            from '../utils/database-schema';
 
 
 export const CREATE_USER  = 'CREATE_USER';

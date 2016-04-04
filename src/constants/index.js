@@ -1,1 +1,2 @@
 export const EMPTY_NOTIFICATIONS = 'EMPTY_NOTIFICATIONS';
+export const LOG_CHANGED         = 'LOG_CHANGED';
