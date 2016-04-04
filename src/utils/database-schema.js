@@ -3,12 +3,11 @@ import Lovefield from 'lovefield';
 export const conditions      = Lovefield.op;
 export const orderDirections = Lovefield.Order;
 
-export const POSTS_RESOURCE   = 'posts';
-export const USERS_RESOURCE   = 'users';
-export const CHANGES_RESOURCE = 'changes';
-export const SYNC_RESOURCE    = 'sync';
-export const DB_NAME          = 'redux-blog';
-export const DB_VERSION       = 2;
+export const POSTS_RESOURCE = 'posts';
+export const USERS_RESOURCE = 'users';
+export const SYNC_RESOURCE  = 'sync';
+export const DB_NAME        = 'redux-blog';
+export const DB_VERSION     = 3;
 
 const isIos   = () => navigator.userAgent.match(/(iPad|iPhone|iPod)/g);
 const builder = Lovefield.schema.create(DB_NAME, DB_VERSION);
@@ -25,37 +24,29 @@ builder.createTable(POSTS_RESOURCE)
   .addColumn('id',         Lovefield.Type.STRING)
   .addColumn('created_at', Lovefield.Type.NUMBER)
   .addColumn('updated_at', Lovefield.Type.NUMBER)
+  .addColumn('deleted_at', Lovefield.Type.NUMBER)
   .addColumn('remote_id',  Lovefield.Type.NUMBER)
   .addColumn('persisted',  Lovefield.Type.BOOLEAN)
   .addColumn('title',      Lovefield.Type.STRING)
   .addColumn('categories', Lovefield.Type.STRING)
   .addColumn('content',    Lovefield.Type.STRING)
-  .addNullable(['remote_id', 'persisted'])
+  .addNullable(['remote_id', 'persisted', 'deleted_at'])
   .addUnique('idxRemoteId', ['remote_id'])
   .addIndex('idxCreatedAt', ['created_at'])
   .addIndex('idxUpdatedAt', ['updated_at'])
+  .addIndex('idxDeletedAt', ['deleted_at'])
   .addPrimaryKey(['id']);
 
 
-builder.createTable(CHANGES_RESOURCE)
-  .addColumn('id',          Lovefield.Type.STRING)
-  .addColumn('resource',    Lovefield.Type.STRING)
-  .addColumn('resource_id', Lovefield.Type.STRING)
-  .addColumn('type',        Lovefield.Type.STRING)
-  .addColumn('created_at',  Lovefield.Type.NUMBER)
-  .addColumn('updated_at',  Lovefield.Type.NUMBER)
-  .addColumn('data',        Lovefield.Type.OBJECT)
-  .addNullable(['resource_id'])
-  .addIndex('idxCreatedAt', ['created_at'])
-  .addIndex('idxUpdatedAt', ['updated_at'])
-  .addIndex('idxResourceType', ['resource', 'resource_id', 'type'])
-  .addPrimaryKey(['id']);
+let options = {
+  onUpgrade: function(db) {
+    return db.addTableColumn(POSTS_RESOURCE, 'deleted_at', null);
+  }
+};
 
-
-let options = {};
 
 if(isIos()) {
-  options = { storeType: Lovefield.schema.DataStoreType.WEB_SQL };
+  options.storeType = Lovefield.schema.DataStoreType.WEB_SQL;
 }
 
 export const schema = builder.connect(options);

@@ -4,22 +4,6 @@ import { generateId, extractConditionsWith, extractUpdatesWith,
 import { POST, PATCH, DELETE } from '../constants/http-methods';
 
 
-export const logChange = ({ type, resource, data }) => {
-  return schema.then((database) => {
-    const attrs = { type, data, resource };
-
-    if(data.id) {
-      attrs.resource_id = data.id;
-    }
-
-    const table = database.getSchema().table(CHANGES_RESOURCE);
-    const row   = table.createRow(defaults(table, attrs));
-
-    return database.insert().into(table).values([row]).exec();
-  });
-};
-
-
 export const fetchAll = ({ resource, params = {}, options = {} }) => {
   return schema.then((database) => {
     const table      = database.getSchema().table(resource);
@@ -74,6 +58,20 @@ export const destroy = ({ resource, params = {} }) => {
     return database.delete().from(table).where(conditions).exec().then(() => {
       return Promise.resolve(params.id || null);
     });
+  });
+};
+
+
+export const softDelete = ({ resource, params = {} }) => {
+  return schema.then((database) => {
+    const table      = databse.getSchema().table(resource);
+    const conditions = extractConditionsWith(table, params);
+
+    return databse.update(table)
+                  .set(table.deleted_at, +new Date())
+                  .where(conditions)
+                  .exec()
+                  .then(() => Promise.resolve(params.id || null));
   });
 };
 
