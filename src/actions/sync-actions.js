@@ -8,10 +8,10 @@ export const SYNC_START  = 'SYNC_START';
 export const SYNC_FINISH = 'SYNC_FINISH';
 
 
-export function down() {
+export function syncDown() {
   return {
     type: SYNC_START,
-    payload: webAPI({ method: GET, resource: 'sync/down' }).then(
+    payload: webAPI({ method: GET, uri: 'sync/down' }).then(
       (response) => {
         // insert/update registers on database.
         // update last sync date
@@ -21,11 +21,11 @@ export function down() {
 }
 
 
-export function up() {
+export function syncUp() {
   return {
     type: SYNC_START,
     payload: fetchAll({ resource: POSTS_RESOURCE }).then((results) => {
-      return webAPI({ method: PATCH, resource: 'sync/up' }).then((response) => {
+      return webAPI({ method: PATCH, uri: 'sync/up' }).then((response) => {
         // update last sync date
       });
     })

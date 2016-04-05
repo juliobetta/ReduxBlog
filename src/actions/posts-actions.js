@@ -44,7 +44,7 @@ export function getPost(id) {
 export function createPost(data) {
   return {
     type: CREATE_POST,
-    payload: API.create({ resource: POSTS_RESOURCE, data })
+    payload: API.create({ sync: true, resource: POSTS_RESOURCE, data })
   };
 }
 
@@ -52,7 +52,7 @@ export function createPost(data) {
 export function deletePost(id) {
   return {
     type: DELETE_POST,
-    payload: API.destroy({ resource: POSTS_RESOURCE, params: { id } })
+    payload: API.destroy({sync: true, resource: POSTS_RESOURCE, params: { id }})
   };
 }
 
@@ -60,6 +60,11 @@ export function deletePost(id) {
 export function updatePost(id, data) {
   return {
     type: UPDATE_POST,
-    payload: API.update({ resource: POSTS_RESOURCE, params: { id }, data })
+    payload: API.update({
+      sync: true,
+      resource: POSTS_RESOURCE,
+      params: { id },
+      data
+    })
   };
 }
