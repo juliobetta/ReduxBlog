@@ -4,15 +4,6 @@ import { generateId, extractConditionsWith, extractUpdatesWith,
 import { POST, PATCH, DELETE } from '../constants/http-methods';
 
 
-/**
- * @todo import syncUp from actions
- * @return
- */
-function syncUp() {
-  console.log('SYNC UP');
-}
-
-
 export const fetchAll = ({ resource, params = {}, options = {} }) => {
   return schema.then((database) => {
     const table      = database.getSchema().table(resource);
@@ -51,7 +42,6 @@ export const create = ({ resource, data, sync = false }) => {
           return Promise.reject();
         }
 
-        syncUp();
         return Promise.resolve(result[0]);
       }
     );
@@ -65,7 +55,6 @@ export const destroy = ({ resource, params = {}, sync = false }) => {
     const conditions = extractConditionsWith(table, params);
 
     return database.delete().from(table).where(conditions).exec().then(() => {
-      syncUp();
       return Promise.resolve(params.id || null);
     });
   });
@@ -82,7 +71,6 @@ export const softDelete = ({ resource, params = {}, sync = false }) => {
                   .where(conditions)
                   .exec()
                   .then(() => {
-                    syncUp();
                     return Promise.resolve(params.id || null);
                   });
   });
@@ -101,7 +89,6 @@ export const update = ({ resource, data, params = {}, sync = false }) => {
 
     return extractUpdatesWith(scope, table, data).where(conditions).exec().then(
       () => {
-        syncUp();
         return Promise.resolve(data);
       }
     );
