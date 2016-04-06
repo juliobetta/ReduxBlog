@@ -1,7 +1,6 @@
-import { schema, orderDirections, CHANGES_RESOURCE } from './database-schema';
-import { generateId, extractConditionsWith, extractUpdatesWith,
+import { schema } from './database-schema';
+import { extractConditionsWith, extractUpdatesWith,
          extractOptionsWith, defaults } from './database-utils';
-import { POST, PATCH, DELETE } from '../constants/http-methods';
 
 
 export const fetchAll = ({ resource, params = {}, options = {} }) => {

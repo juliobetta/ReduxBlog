@@ -1,3 +1,4 @@
+import { syncUp }                          from './sync-actions';
 import * as API                            from '../utils/local-api';
 import { POSTS_RESOURCE, orderDirections } from '../utils/database-schema';
 
@@ -44,7 +45,11 @@ export function getPost(id) {
 export function createPost(data) {
   return {
     type: CREATE_POST,
-    payload: API.create({ sync: true, resource: POSTS_RESOURCE, data })
+    payload: API.create({ resource: POSTS_RESOURCE, data })
+                .then(results => {
+                  syncUp();
+                  return Promise.resolve(results);
+                })
   };
 }
 
@@ -52,7 +57,11 @@ export function createPost(data) {
 export function deletePost(id) {
   return {
     type: DELETE_POST,
-    payload: API.destroy({sync: true, resource: POSTS_RESOURCE, params: { id }})
+    payload: API.destroy({ resource: POSTS_RESOURCE, params: { id } })
+                .then(results => {
+                  syncUp();
+                  return Promise.resolve(results);
+                })
   };
 }
 
@@ -60,11 +69,10 @@ export function deletePost(id) {
 export function updatePost(id, data) {
   return {
     type: UPDATE_POST,
-    payload: API.update({
-      sync: true,
-      resource: POSTS_RESOURCE,
-      params: { id },
-      data
-    })
+    payload: API.update({ resource: POSTS_RESOURCE, params: { id }, data })
+                .then(results => {
+                  syncUp();
+                  return Promise.resolve(results);
+                })
   };
 }

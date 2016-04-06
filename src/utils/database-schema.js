@@ -5,7 +5,6 @@ export const orderDirections = Lovefield.Order;
 
 export const POSTS_RESOURCE = 'posts';
 export const USERS_RESOURCE = 'users';
-export const SYNC_RESOURCE  = 'sync';
 export const DB_NAME        = 'redux-blog';
 export const DB_VERSION     = 3;
 
@@ -16,21 +15,16 @@ builder.createTable(USERS_RESOURCE)
        .addColumn('current_user',  Lovefield.Type.OBJECT);
 
 
- builder.createTable(SYNC_RESOURCE)
-        .addColumn('updated_at',  Lovefield.Type.NUMBER);
-
-
 builder.createTable(POSTS_RESOURCE)
   .addColumn('id',         Lovefield.Type.STRING)
   .addColumn('created_at', Lovefield.Type.NUMBER)
   .addColumn('updated_at', Lovefield.Type.NUMBER)
   .addColumn('deleted_at', Lovefield.Type.NUMBER)
   .addColumn('remote_id',  Lovefield.Type.NUMBER)
-  .addColumn('persisted',  Lovefield.Type.BOOLEAN)
   .addColumn('title',      Lovefield.Type.STRING)
   .addColumn('categories', Lovefield.Type.STRING)
   .addColumn('content',    Lovefield.Type.STRING)
-  .addNullable(['remote_id', 'persisted', 'deleted_at'])
+  .addNullable(['remote_id', 'deleted_at'])
   .addUnique('idxRemoteId', ['remote_id'])
   .addIndex('idxCreatedAt', ['created_at'])
   .addIndex('idxUpdatedAt', ['updated_at'])

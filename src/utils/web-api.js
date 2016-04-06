@@ -3,7 +3,7 @@ import { fetchOne }       from './local-api';
 import { USERS_RESOURCE } from './database-schema';
 
 
-export const API_HOST = 'http://reduxblogserver.herokuapp.com';
+export const API_HOST = 'http://docker:3000';
 export const API_URL  = `${API_HOST}/api`;
 
 
