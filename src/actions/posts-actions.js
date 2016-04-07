@@ -57,7 +57,7 @@ export function createPost(data) {
 export function deletePost(id) {
   return {
     type: DELETE_POST,
-    payload: API.destroy({ resource: POSTS_RESOURCE, params: { id } })
+    payload: API.softDelete({ resource: POSTS_RESOURCE, params: { id } })
                 .then(results => {
                   syncUp();
                   return Promise.resolve(results);

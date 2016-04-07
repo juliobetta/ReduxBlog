@@ -11,7 +11,7 @@ export const API_URL  = `${API_HOST}/api`;
  * Check whether internet is reachable
  * @return {Promise}
  */
-const isHostReachable = () => {
+function isHostReachable() {
   const rand = Math.floor((1 + Math.random()) * 0x10000);
 
   let server = window.location.hostname;
@@ -24,7 +24,7 @@ const isHostReachable = () => {
     (error)    => Promise.reject(error)
   );
 
-};
+}
 
 
 /**
@@ -32,7 +32,7 @@ const isHostReachable = () => {
  * @param  {Array} args = []
  * @return {Promise}
  */
-const call = (method, uri, args = []) => {
+function call (method, uri, args = []) {
   return isHostReachable().then(
     ()      => Promise.resolve(axios[method](...args)),
     (error) => Promise.reject({
@@ -41,7 +41,7 @@ const call = (method, uri, args = []) => {
       }
     })
   );
-};
+}
 
 
 /**
@@ -49,20 +49,20 @@ const call = (method, uri, args = []) => {
  * @param  {Object} { method, uri, data = null }
  * @return {Promise}
  */
-export const webApi = ({ method, uri, data = null }) => {
+export function webApi({ method, uri, data = null }) {
   let args = [`${API_URL}/${uri}`];
 
   if(data !== null) {
     args.push(data);
   }
 
-  return fetchOne({ resource: USERS_RESOURCE }).then((user) => {
+  return fetchOne({ resource: USERS_RESOURCE }).then((result) => {
     args.push({
       headers: {
-        'Authorization': `Bearer ${user.token}`
+        'Authorization': `Bearer ${result.current_user.token}`
       }
     });
 
     return call(method, uri, args);
   }).catch(() => call(method, uri, args));
-};
+}

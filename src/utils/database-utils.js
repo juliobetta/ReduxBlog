@@ -5,7 +5,7 @@ import { conditions, orderDirections } from './database-schema';
  * Generate UUID
  * @return {String}
  */
-export const generateId = () => {
+export function generateId() {
   let d = new Date().getTime();
 
   let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -15,7 +15,7 @@ export const generateId = () => {
   });
 
   return uuid;
-};
+}
 
 
 /**
@@ -35,7 +35,7 @@ export const generateId = () => {
  * @param  {Object} params
  * @return {Object}
  */
-export const extractConditionsWith = (table, params) => {
+export function extractConditionsWith(table, params) {
   if(typeof params !== 'object') {
     return null;
   }
@@ -55,7 +55,7 @@ export const extractConditionsWith = (table, params) => {
   }
 
   return conditions.and(...args);
-};
+}
 
 
 /**
@@ -65,7 +65,7 @@ export const extractConditionsWith = (table, params) => {
  * @param  {Object} data = null
  * @return {Lovefield.Scope}
  */
-export const extractUpdatesWith = (scope, table, data = null) => {
+export function extractUpdatesWith(scope, table, data = null) {
   if(!data) {
     return scope;
   }
@@ -79,7 +79,7 @@ export const extractUpdatesWith = (scope, table, data = null) => {
   }
 
   return scope;
-};
+}
 
 
 /**
@@ -96,7 +96,7 @@ export const extractUpdatesWith = (scope, table, data = null) => {
  * @param  {Object} { orderBy = [] }
  * @return {Lovefeld.Scope}
  */
-export const extractOptionsWith = (scope, table, { orderBy = [] }) => {
+export function extractOptionsWith(scope, table, { orderBy = [] }) {
   if(orderBy.length) {
     let field, dir;
     for([field, dir] of orderBy) {
@@ -106,7 +106,7 @@ export const extractOptionsWith = (scope, table, { orderBy = [] }) => {
   }
 
   return scope;
-};
+}
 
 
 /**
@@ -115,7 +115,7 @@ export const extractOptionsWith = (scope, table, { orderBy = [] }) => {
  * @param  {Object} data
  * @return {Obbject}
  */
-export const defaults = (table, data = {}) => {
+export function defaults(table, data = {}) {
   if(table.persisted) {
     data['persisted'] = false;
   }
@@ -133,4 +133,4 @@ export const defaults = (table, data = {}) => {
   }
 
   return data;
-};
+}

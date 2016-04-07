@@ -1,7 +1,7 @@
-import { fetchAll, fetchOne }            from '../utils/local-api';
-import { webApi }                        from '../utils/web-api';
-import { POSTS_RESOURCE, SYNC_RESOURCE } from '../utils/database-schema';
-import { GET, PATCH }                    from '../constants/http-methods';
+import { fetchAll, fetchOne, processInBulk } from '../utils/local-api';
+import { webApi }                            from '../utils/web-api';
+import { POSTS_RESOURCE, SYNC_RESOURCE }     from '../utils/database-schema';
+import { GET, PATCH }                        from '../constants/http-methods';
 
 
 export const SYNC_START  = 'SYNC_START';
@@ -14,6 +14,7 @@ const updateSyncDate = () => {
   localStorage.setItem(LAST_SYNC, +new Date());
 };
 
+
 const getLastSyncDate = () => {
   return +localStorage.getItem(LAST_SYNC);
 };
@@ -22,7 +23,7 @@ const getLastSyncDate = () => {
 export function syncDown() {
   return {
     type: SYNC_START,
-    payload: webAPI({ method: GET, uri: 'sync/down' }).then(
+    payload: webAPI({ method: GET, uri: 'sync' }).then(
       (response) => {
 
         // insert/update registers on database.
@@ -39,13 +40,14 @@ export function syncUp() {
   return {
     type: SYNC_START,
     payload: fetchAll({ resource: POSTS_RESOURCE, params }).then((posts) => {
-      console.log('to be posted', posts);
+      const data = { data: { posts } };
 
-      return webApi({ method: PATCH, uri: 'sync/up', data: { posts } }).then(
+      return webApi({ method: PATCH, uri: 'sync', data }).then(
         (response) => {
-          console.log(response);
           updateSyncDate();
-          return Promise.resolve(response);
+          return processInBulk(response.data).then(
+            () => Promise.resolve(response.data)
+          );
         }
       ).catch(error => { /* Do NOTHING for now */ });
     })
