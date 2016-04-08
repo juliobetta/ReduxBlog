@@ -34,9 +34,9 @@ module.exports = {
     new AppCachePlugin({
       cache: [
         'index.html',
-        'style/style.css',
+        'style/default.css',
         'bundle.js',
-        'http://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css'
+        'https://rawgit.com/twbs/bootstrap/v4.0.0-alpha.2/dist/css/bootstrap.css'
       ],
       network: ['*'],
       setting: ['prefer-online'],

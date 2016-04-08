@@ -4,6 +4,7 @@ import PureComponent        from './pure-component';
 import NavBar               from './elements/navbar';
 import NavBarBrand          from './elements/navbar-brand';
 import NavBarItem           from './elements/navbar-item';
+import SyncIndicator        from './elements/sync-indicator';
 import { signout }          from '../actions/users-actions';
 
 
@@ -53,7 +54,11 @@ class AppNavBar extends PureComponent {
         <NavBarItem isHidden={!this.props.currentUser} path="/">
           Posts
         </NavBarItem>
+
         <div className="pull-xs-right">
+          <NavBarItem>
+            <SyncIndicator />
+          </NavBarItem>
           {this.renderEmail()}
           {this.renderSignout()}
         </div>

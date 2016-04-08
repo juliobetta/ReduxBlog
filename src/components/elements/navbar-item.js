@@ -11,15 +11,21 @@ export default (props = {}) => {
     hidden: props.isHidden
   });
 
-  if(!path) {
+  if(path) {
+    return (
+      <Link className={classes} to={path}>
+        {children}
+      </Link>
+    );
+  }
+
+  if(props.onClick) {
     return (
       <a className={classes} href="#" {...props}>{children}</a>
     );
   }
 
   return (
-    <Link className={classes} to={path}>
-      {children}
-    </Link>
+    <div className={classes}>{children}</div>
   );
 };

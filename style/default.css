@@ -1,3 +1,7 @@
+span > a {
+  color: inherit !important;
+}
+
 .container > main {
   padding: 60px 15px 0;
 }
