@@ -3,28 +3,9 @@ import { fetchOne }       from './local-api';
 import { USERS_RESOURCE } from './database-schema';
 
 
-export const API_HOST = 'http://docker:3000';
-export const API_URL  = `${API_HOST}/api`;
-
-
-/**
- * Check whether internet is reachable
- * @return {Promise}
- */
-function isHostReachable() {
-  const rand = Math.floor((1 + Math.random()) * 0x10000);
-
-  let server = window.location.hostname;
-  if (window.location.port !== '') {
-    server += ':'+window.location.port;
-  }
-
-  return axios.head(API_HOST, { rand }).then(
-    (response) => Promise.resolve(),
-    (error)    => Promise.reject(error)
-  );
-
-}
+export const API_HOST          = 'http://docker:3000';
+export const API_URL           = `${API_HOST}/api`;
+export const NETWORK_ERROR_MSG = 'Network Error'; // from axios
 
 
 /**
@@ -33,12 +14,11 @@ function isHostReachable() {
  * @return {Promise}
  */
 function call (method, uri, args = []) {
-  return isHostReachable().then(
-    ()      => Promise.resolve(axios[method](...args)),
-    (error) => Promise.reject({
-      data: {
-        errors: ['No Network. Please try again later']
-      }
+  return axios[method](...args).then(
+    response => Promise.resolve(response),
+    error    => Promise.reject({
+      ...error,
+      offline: error.message && error.message === NETWORK_ERROR_MSG
     })
   );
 }
@@ -50,7 +30,7 @@ function call (method, uri, args = []) {
  * @return {Promise}
  */
 export function webApi({ method, uri, data = null }) {
-  let args = [`${API_URL}/${uri}`];
+  let args = [uri ? `${API_URL}/${uri}` : API_HOST];
 
   if(data !== null) {
     args.push(data);

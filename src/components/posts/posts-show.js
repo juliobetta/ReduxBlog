@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React                from 'react';
 import { connect }          from 'react-redux';
 import PureComponent        from '../pure-component';
 import Button               from '../elements/button';
@@ -8,13 +8,6 @@ import { getPost, emptyPost,
 
 
 class PostsForm extends PureComponent {
-
-  // Check through all of PostsNew's parents for the property router
-  // and assign it to this.context.router
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
 
   componentWillMount() {
     this.props.emptyPost();
@@ -26,8 +19,7 @@ class PostsForm extends PureComponent {
     event.preventDefault();
 
     if(confirm('Are you sure?')) {
-      this.props.deletePost(this.props.params.id)
-        .then(() => this.context.router.push('/') );
+      this.props.deletePost(this.props.params.id);
     }
   }
 

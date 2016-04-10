@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect }          from 'react-redux';
+import SyncIndicator        from './sync-indicator';
 import PureComponent        from './pure-component';
 import NavBar               from './elements/navbar';
 import NavBarBrand          from './elements/navbar-brand';
 import NavBarItem           from './elements/navbar-item';
-import SyncIndicator        from './elements/sync-indicator';
 import { signout }          from '../actions/users-actions';
 
 
@@ -56,7 +56,7 @@ class AppNavBar extends PureComponent {
         </NavBarItem>
 
         <div className="pull-xs-right">
-          <NavBarItem>
+          <NavBarItem isHidden={!this.props.currentUser}>
             <SyncIndicator />
           </NavBarItem>
           {this.renderEmail()}

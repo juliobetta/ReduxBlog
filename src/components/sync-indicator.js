@@ -1,10 +1,8 @@
-import React                from 'react';
-import { connect }          from 'react-redux';
-import classNames           from 'classnames';
-import Label                from './label';
-import PureComponent        from '../pure-component';
-import { syncUp, syncDown } from '../../actions/sync-actions';
-
+import React                    from 'react';
+import { connect }              from 'react-redux';
+import PureComponent            from './pure-component';
+import Label                    from './elements/label';
+import { syncUp, syncDown }     from '../actions/sync-actions';
 
 class SyncIndicator extends PureComponent {
 
@@ -32,9 +30,11 @@ class SyncIndicator extends PureComponent {
 
 
   render() {
-    const classes = classNames({
-      hidden: this.props.isHidden || false
-    });
+    if(this.props.isOffline) {
+      return (
+        <Label danger>OFFLINE</Label>
+      );
+    }
 
     return (
       this.props.isSyncInProgress ? this.renderInSync() : this.renderSync()
@@ -46,7 +46,8 @@ class SyncIndicator extends PureComponent {
 
 export default connect(
   (state) => ({
-    isSyncInProgress: state.sync.started
+    isSyncInProgress: state.sync.started,
+    isOffline: state.network.offline
   }),
   { syncUp, syncDown }
 )(SyncIndicator);

@@ -39,8 +39,10 @@
     "react-pure-render": "^1.0.2",
     "react-redux": "^4.0.0",
     "react-router": "^2.0.0-rc5",
+    "react-router-redux": "^4.0.2",
     "redux": "^3.0.4",
     "redux-form": "^4.2.2",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.0.1"
   }
 }

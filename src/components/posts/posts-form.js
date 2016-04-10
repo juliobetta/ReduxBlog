@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react';
+import React                from 'react';
 import { reduxForm, reset } from 'redux-form';
-import PureComponent from '../pure-component';
-import FormGroup from '../elements/form-group';
-import FormField from '../elements/form-field';
-import Button from '../elements/button';
+import PureComponent        from '../pure-component';
+import FormGroup            from '../elements/form-group';
+import FormField            from '../elements/form-field';
+import Button               from '../elements/button';
+import validate             from '../../validators/posts-form-validator';
 import { getPost, updatePost, createPost } from '../../actions/posts-actions';
-import validate from '../../validators/posts-form-validator';
 
 
 const reduxFormProperties = {
@@ -16,14 +16,6 @@ const reduxFormProperties = {
 
 
 class PostsForm extends PureComponent {
-
-  // Check through all of PostsForm's parents for the property router
-  // and assign it to this.context.router
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
-
   componentWillMount() {
     if(this.isUpdateForm()) {
       this.props.getPost(this.props.params.id);
@@ -47,15 +39,11 @@ class PostsForm extends PureComponent {
 
 
   onSubmitForm(data) {
-    let action = null;
-
     if(this.isUpdateForm()) {
-      action = this.props.updatePost(this.props.params.id, data);
+      this.props.updatePost(this.props.params.id, data);
     } else {
-      action = this.props.createPost(data);
+      this.props.createPost(data);
     }
-
-    action.then(() => this.context.router.push('/') );
   }
 
 

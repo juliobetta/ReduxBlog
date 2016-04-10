@@ -135,6 +135,10 @@ export function processInBulk(data) {
       }
     }
 
+    if(!queries.length) {
+      return Promise.resolve(true);
+    }
+
     return tx.exec(queries);
   });
 }

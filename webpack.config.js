@@ -36,7 +36,7 @@ module.exports = {
         'index.html',
         'style/default.css',
         'bundle.js',
-        'https://rawgit.com/twbs/bootstrap/v4.0.0-alpha.2/dist/css/bootstrap.css'
+        'http://rawgit.com/twbs/bootstrap/v4.0.0-alpha.2/dist/css/bootstrap.css'
       ],
       network: ['*'],
       setting: ['prefer-online'],

@@ -1,3 +1,4 @@
+import { push }                            from 'react-router-redux';
 import { syncUp }                          from './sync-actions';
 import * as API                            from '../utils/local-api';
 import { POSTS_RESOURCE, orderDirections } from '../utils/database-schema';
@@ -43,36 +44,36 @@ export function getPost(id) {
 
 
 export function createPost(data) {
-  return {
-    type: CREATE_POST,
-    payload: API.create({ resource: POSTS_RESOURCE, data })
-                .then(results => {
-                  syncUp();
-                  return Promise.resolve(results);
-                })
-  };
+  return dispatch => {
+    API.create({ resource: POSTS_RESOURCE, data })
+       .then(results => {
+          syncUp()(dispatch);
+          dispatch({ type: CREATE_POST, payload: results });
+          dispatch(push('/'));
+       });
+  }
 }
 
 
 export function deletePost(id) {
-  return {
-    type: DELETE_POST,
-    payload: API.softDelete({ resource: POSTS_RESOURCE, params: { id } })
-                .then(results => {
-                  syncUp();
-                  return Promise.resolve(results);
-                })
-  };
+  return dispatch => {
+    API.softDelete({ resource: POSTS_RESOURCE, params: { id } })
+       .then(results => {
+          syncUp()(dispatch);
+          dispatch({ type: DELETE_POST, payload: id });
+          dispatch(push('/'));
+       });
+  }
 }
 
 
 export function updatePost(id, data) {
-  return {
-    type: UPDATE_POST,
-    payload: API.update({ resource: POSTS_RESOURCE, params: { id }, data })
-                .then(results => {
-                  syncUp();
-                  return Promise.resolve(results);
-                })
-  };
+  return dispatch => {
+    API.update({ resource: POSTS_RESOURCE, params: { id }, data })
+       .then(results => {
+          syncUp()(dispatch);
+          dispatch({ type: UPDATE_POST, payload: results });
+          dispatch(push('/'));
+       });
+  }
 }

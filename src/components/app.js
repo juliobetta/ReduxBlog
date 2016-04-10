@@ -1,11 +1,19 @@
-import React            from 'react';
-import PureComponent    from './pure-component';
-import AppNavBar        from './app-navbar';
-import AppNotifications from './app-notifications';
-import Container        from './elements/container';
+import React                from 'react';
+import { connect }          from 'react-redux';
+import PureComponent        from './pure-component';
+import AppNavBar            from './app-navbar';
+import AppNotifications     from './app-notifications';
+import Container            from './elements/container';
+import { syncUp, syncDown } from '../actions/sync-actions';
 
 
 class App extends PureComponent {
+
+  componentDidMount() {
+    this.props.syncUp();
+  }
+
+
   render() {
     return (
       <div>
@@ -23,4 +31,4 @@ class App extends PureComponent {
 }
 
 
-export default App;
+export default connect(null, { syncUp, syncDown })(App);
