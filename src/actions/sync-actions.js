@@ -1,3 +1,4 @@
+import { push }                              from 'react-router-redux';
 import { updateSyncDate, getLastSyncDate }   from '../utils';
 import { fetchAll, fetchOne, processInBulk } from '../utils/local-api';
 import { webApi }                            from '../utils/web-api';
@@ -10,19 +11,32 @@ export const SYNC_STARTED  = 'SYNC_STARTED';
 export const SYNC_FINISHED = 'SYNC_FINISHED';
 
 
+function processResponse(response) {
+  updateSyncDate();
+  return processInBulk(response.data);
+}
+
+
+function processError({ error, dispatch }) {
+  if(error.offline) {
+    dispatch({ type: NETWORK_OFFLINE, payload: true });
+    return;
+  }
+
+  if(error.status === 401) {
+    dispatch(push('/sign_in'));
+  }
+}
+
+
 export function syncDown() {
   return dispatch => {
     dispatch({ type: SYNC_STARTED });
 
-    webAPI({ method: GET, uri: 'sync' }).then(
-      (response) => {
-
-        // insert/update registers on database.
-        // update last sync date
-
-        dispatch({ type: SYNC_FINISHED });
-      }
-    );
+    webAPI({ method: GET, uri: 'sync' })
+      .then(processResponse)
+      .then(() => dispatch({ type: SYNC_FINISHED }))
+      .catch(error => processError({ error, dispatch }));
   };
 }
 
@@ -36,18 +50,30 @@ export function syncUp() {
     fetchAll({ resource: POSTS_RESOURCE, params }).then((posts) => {
       const data = { data: { posts } };
 
-      webApi({ method: PATCH, uri: 'sync', data }).then(
-        (response) => {
-          updateSyncDate();
-          processInBulk(response.data).then(
-            () => dispatch({ type: SYNC_FINISHED })
-          );
-        }
-      ).catch(error => {
-        if(error.offline) {
-          dispatch({ type: NETWORK_OFFLINE, payload: true });
-        }
-      });
+      webApi({ method: PATCH, uri: 'sync', data })
+        .then(processResponse)
+        .then(() => dispatch({ type: SYNC_FINISHED }))
+        .catch(error => processError({ error, dispatch }));
     });
+  };
+}
+
+
+export function syncAll() {
+  const params = { updated_at: ['gte', getLastSyncDate()] };
+
+  return dispatch => {
+    webAPI({ method: GET, uri: 'sync', data: { start_from: getLastSyncDate() } })
+      .then(processResponse)
+      .then(() => {
+        return fetchAll({ resource: POSTS_RESOURCE, params }).then((posts) => {
+          const data = { data: { posts } };
+
+          return webApi({ method: PATCH, uri: 'sync', data })
+            .then(processResponse)
+        });
+      })
+      .then(() => dispatch({ type: SYNC_FINISHED }))
+      .catch(error => processError({ error, dispatch }));
   };
 }
