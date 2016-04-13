@@ -1,6 +1,5 @@
-import axios              from 'axios';
-import { fetchOne }       from './local-api';
-import { USERS_RESOURCE } from './database-schema';
+import axios from 'axios';
+import User  from '../models/user';
 
 
 export const API_HOST          = 'http://docker:3000';
@@ -36,13 +35,19 @@ export function webApi({ method, uri, data = null }) {
     args.push(data);
   }
 
-  return fetchOne({ resource: USERS_RESOURCE }).then((result) => {
-    args.push({
-      headers: {
-        'Authorization': `Bearer ${result.current_user.token}`
-      }
-    });
+  return User.current().then(
+    user => {
+      args.push({
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
 
-    return call(method, uri, args);
-  }).catch(() => call(method, uri, args));
+      return call(method, uri, args);
+    },
+    error => {
+      console.log(error);
+      return call(method, uri, args);
+    }
+  );
 }

@@ -1,15 +1,15 @@
-import React                    from 'react';
-import { connect }              from 'react-redux';
-import PureComponent            from './pure-component';
-import Label                    from './elements/label';
-import { syncUp, syncDown }     from '../actions/sync-actions';
+import React         from 'react';
+import { connect }   from 'react-redux';
+import PureComponent from './pure-component';
+import Label         from './elements/label';
+import { syncAll }   from '../actions/sync-actions';
 
 class SyncIndicator extends PureComponent {
 
   onClickIndicator(event) {
     event.preventDefault();
 
-    this.props.syncUp();
+    this.props.syncAll();
   }
 
 
@@ -49,5 +49,5 @@ export default connect(
     isSyncInProgress: state.sync.started,
     isOffline: state.network.offline
   }),
-  { syncUp, syncDown }
+  { syncAll }
 )(SyncIndicator);

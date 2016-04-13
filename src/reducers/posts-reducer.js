@@ -26,7 +26,7 @@ export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
     case CREATE_POST: return { ...state, all: [ action.payload, ...state.all ]};
     case EMPTY_POST:  return { ...state, post: null };
-    case FETCH_POSTS: return { ...state, all: action.payload };
+    case FETCH_POSTS: console.log(action); return { ...state, all: action.payload };
     case GET_POST:    return { ...state, post: action.payload };
 
     case UPDATE_POST:

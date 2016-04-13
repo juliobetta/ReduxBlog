@@ -1,11 +1,12 @@
-import { LAST_SYNC } from '../constants';
+import { getCurrentTimestamp } from './database-utils';
+import { LAST_SYNC }          from '../constants';
 
 /**
  * Update last sync date
  * @return {void}
  */
 export function updateSyncDate() {
-  localStorage.setItem(LAST_SYNC, +new Date());
+  localStorage.setItem(LAST_SYNC, getCurrentTimestamp() / 1000);
 }
 
 
@@ -14,5 +15,5 @@ export function updateSyncDate() {
  * @return {Integer} timestamp
  */
 export function getLastSyncDate() {
-  return +localStorage.getItem(LAST_SYNC);
+  return localStorage.getItem(LAST_SYNC);
 }

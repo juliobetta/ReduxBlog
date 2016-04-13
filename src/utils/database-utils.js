@@ -2,6 +2,15 @@ import { conditions, orderDirections } from './database-schema';
 
 
 /**
+ * get current timestamp
+ * @return {Float}
+ */
+export function getCurrentTimestamp() {
+  return new Date().getTime();
+}
+
+
+/**
  * Generate UUID
  * @return {String}
  */
@@ -75,7 +84,7 @@ export function extractUpdatesWith(scope, table, data = null) {
   }
 
   if(table.updated_at) {
-    scope.set(table.updated_at, +new Date());
+    scope.set(table.updated_at, data.updated_at || getCurrentTimestamp());
   }
 
   return scope;
@@ -125,11 +134,11 @@ export function defaults(table, data = {}) {
   }
 
   if(table.created_at) {
-    data['created_at'] = +new Date();
+    data['created_at'] = data.created_at || getCurrentTimestamp();
   }
 
   if(table.updated_at) {
-    data['updated_at'] = +new Date();
+    data['updated_at'] = data.created_at || getCurrentTimestamp();
   }
 
   return data;

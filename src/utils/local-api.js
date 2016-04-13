@@ -1,5 +1,5 @@
 import { schema } from './database-schema';
-import { extractConditionsWith, extractUpdatesWith,
+import { extractConditionsWith, extractUpdatesWith, getCurrentTimestamp,
          extractOptionsWith, defaults } from './database-utils';
 
 
@@ -74,9 +74,10 @@ export function softDelete({ resource, params = {} }, transaction = false) {
   return schema.then((database) => {
     const table      = database.getSchema().table(resource);
     const conditions = extractConditionsWith(table, params);
-    const scope      = database.update(table).set(table.updated_at, +new Date())
-                                             .set(table.deleted_at, +new Date())
-                                             .where(conditions);
+    const scope      = database.update(table)
+                               .set(table.updated_at, getCurrentTimestamp())
+                               .set(table.deleted_at, getCurrentTimestamp())
+                               .where(conditions);
     if(transaction) {
       return scope;
     }
@@ -101,6 +102,7 @@ export function update({ resource, data, params = {}}, transaction = false) {
 
     scope = extractUpdatesWith(scope, table, data).where(conditions);
 
+
     if(transaction) {
       return scope;
     }
@@ -112,33 +114,31 @@ export function update({ resource, data, params = {}}, transaction = false) {
 
 export function processInBulk(data) {
   return schema.then((database) => {
-    const tx      = database.createTransaction();
-    const queries = [];
-
-    let resource, table;
+    const promises = [];
+    let resource, params, attrs;
 
     for(resource of Object.keys(data)) {
-      let attrs, query;
-      table = database.getSchema().table(resource);
 
       for(attrs of data[resource]) {
-
-        if(attrs.deleted_at) {
-          query = database.delete().from(table)
-                          .where(table.remote_id.eq(attrs.remote_id));
+        if(attrs.id) {
+          params = { id: attrs.id };
         } else {
-          query = database.update(table).set(table.remote_id, attrs.remote_id)
-                                        .where(table.id.eq(attrs.id));
+          params = { remote_id: attrs.remote_id };
         }
 
-        queries.push(query);
+        if(attrs.deleted_at) {
+          promises.push(destroy({ resource, params }));
+        } else {
+          // try to create
+          promises.push(create({ resource, data: attrs }).then(
+            () => Promise.resolve(true),
+            // catch duplicate, then update
+            () => update({ resource, data: attrs, params })
+          ));
+        }
       }
     }
 
-    if(!queries.length) {
-      return Promise.resolve(true);
-    }
-
-    return tx.exec(queries);
+    return Promise.all(promises);
   });
 }
