@@ -1,5 +1,5 @@
 import axios from 'axios';
-import User  from '../models/user';
+import User  from './daos/user';
 
 
 export const API_HOST          = 'http://docker:3000';
@@ -46,7 +46,6 @@ export function webApi({ method, uri, data = null }) {
       return call(method, uri, args);
     },
     error => {
-      console.log(error);
       return call(method, uri, args);
     }
   );

@@ -6,7 +6,7 @@ export const orderDirections = Lovefield.Order;
 export const POSTS_RESOURCE = 'posts';
 export const USERS_RESOURCE = 'users';
 export const DB_NAME        = 'redux-blog';
-export const DB_VERSION     = 5;
+export const DB_VERSION     = 6;
 
 const isIos   = () => navigator.userAgent.match(/(iPad|iPhone|iPod)/g);
 const builder = Lovefield.schema.create(DB_NAME, DB_VERSION);

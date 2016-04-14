@@ -1,6 +1,11 @@
 import { conditions, orderDirections } from './database-schema';
 
 
+export const AND = 'and';
+export const OR  = 'or';
+export const NOT = 'not';
+
+
 /**
  * get current timestamp
  * @return {Float}
@@ -42,6 +47,7 @@ export function generateId() {
  * }
  * @param  {Lovefield.Table} table
  * @param  {Object} params
+ * @param  {String} criteria = 'and'
  * @return {Object}
  */
 export function extractConditionsWith(table, params) {
@@ -54,6 +60,12 @@ export function extractConditionsWith(table, params) {
   }
 
   const args = [];
+  let criteria = AND;
+
+  if(params instanceof Array) {
+    criteria = params[0];
+    params   = params[1];
+  }
 
   for(let [key, value] of Object.entries(params)) {
     if(value instanceof Array) {
@@ -63,7 +75,7 @@ export function extractConditionsWith(table, params) {
     }
   }
 
-  return conditions.and(...args);
+  return conditions[criteria](...args);
 }
 
 

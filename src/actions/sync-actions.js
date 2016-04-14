@@ -1,10 +1,10 @@
 import { push }                              from 'react-router-redux';
-import  Post                                 from '../models/post';
 import { NETWORK_OFFLINE }                   from '../constants';
 import { GET, PATCH }                        from '../constants/http-methods';
 import { updateSyncDate, getLastSyncDate }   from '../utils';
 import { fetchAll, fetchOne, processInBulk } from '../utils/local-api';
 import { webApi }                            from '../utils/web-api';
+import  Post                                 from '../utils/daos/post';
 import { SIGNOUT_USER }                      from '../actions/users-actions';
 import { FETCH_POSTS }                       from '../actions/posts-actions';
 
@@ -14,14 +14,11 @@ export const SYNC_FINISHED = 'SYNC_FINISHED';
 
 
 function processResponse(response) {
-  updateSyncDate();
   return processInBulk(response.data);
 }
 
 
 function processError({ error, dispatch }) {
-  console.log(error);
-
   if(error.offline) {
     dispatch({ type: NETWORK_OFFLINE, payload: true });
     return;
@@ -40,16 +37,19 @@ export function syncDown() {
 
     webApi({ method: GET, uri: `sync?updated_at=${getLastSyncDate()}` })
       .then(processResponse)
-      .then(() => dispatch({ type: SYNC_FINISHED }))
+      .then(() => {
+        updateSyncDate();
+        dispatch({ type: SYNC_FINISHED });
+      })
       .catch(error => processError({ error, dispatch }));
   };
 }
 
 
 export function syncUp() {
-  const params = { updated_at: ['gte', getLastSyncDate()] };
-
   return dispatch => {
+    const params = { updated_at: ['gte', getLastSyncDate()] };
+
     dispatch({ type: SYNC_STARTED });
 
     Post.fetchAll(params).then((posts) => {
@@ -57,7 +57,10 @@ export function syncUp() {
 
       webApi({ method: PATCH, uri: 'sync', data })
         .then(processResponse)
-        .then(() => dispatch({ type: SYNC_FINISHED }))
+        .then(() => {
+          updateSyncDate();
+          dispatch({ type: SYNC_FINISHED });
+        })
         .catch(error => processError({ error, dispatch }));
     });
   };
@@ -75,7 +78,11 @@ export function syncAll() {
           const data = { data: { posts } };
 
           return webApi({ method: PATCH, uri: 'sync', data })
-                  .then(processResponse);
+                  .then(processResponse)
+                  .then(() => {
+                    updateSyncDate();
+                    return Promise.resolve(true);
+                  });
         });
       })
       .then(Post.index)

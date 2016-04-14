@@ -1,12 +1,18 @@
-import React         from 'react';
-import { connect }   from 'react-redux';
-import PostsItem     from './posts-item';
-import PureComponent from '../pure-component';
-import Button        from '../elements/button';
-import Loading       from '../elements/loading';
+import React          from 'react';
+import { connect }    from 'react-redux';
+import PostsItem      from './posts-item';
+import PureComponent  from '../pure-component';
+import Button         from '../elements/button';
+import Loading        from '../elements/loading';
+import { fetchPosts } from '../../actions/posts-actions';
 
 
 class PostsIndex extends PureComponent {
+
+  componentDidMount() {
+    this.props.fetchPosts();
+  }
+
 
   render() {
     if(!this.props.currentUser) {
@@ -35,4 +41,7 @@ class PostsIndex extends PureComponent {
 };
 
 
-export default connect(state => ({ posts: state.posts.all }))(PostsIndex);
+export default connect(
+  state => ({ posts: state.posts.all }),
+  { fetchPosts }
+)(PostsIndex);

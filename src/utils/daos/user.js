@@ -1,5 +1,5 @@
-import * as Database      from '../utils/local-api';
-import { USERS_RESOURCE } from '../utils/database-schema';
+import * as Database      from '../local-api';
+import { USERS_RESOURCE } from '../database-schema';
 
 
 const User = {

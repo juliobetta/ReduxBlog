@@ -6,6 +6,7 @@ import Button               from '../elements/button';
 import { ERROR }            from '../../constants/alert-status';
 import validate             from '../../validators/auth-form-validator';
 import { signin }           from '../../actions/users-actions';
+import { syncAll }          from '../../actions/sync-actions';
 
 
 const reduxFormProperties = {
@@ -25,6 +26,7 @@ class UsersAuthForm extends PureComponent {
   onSubmitForm(props) {
     this.props.signin(props).then((response) => {
       if(!response.error) {
+        this.props.syncAll();
         this.context.router.push('/');
       }
     });
@@ -61,5 +63,5 @@ class UsersAuthForm extends PureComponent {
 export default reduxForm(
   reduxFormProperties,
   (state) => ({}),
-  { signin }
+  { signin, syncAll }
 )(UsersAuthForm);

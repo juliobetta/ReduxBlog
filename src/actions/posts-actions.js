@@ -1,6 +1,6 @@
 import { push }   from 'react-router-redux';
 import { syncUp } from './sync-actions';
-import Post       from '../models/post';
+import Post       from '../utils/daos/post';
 
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const CREATE_POST = 'CREATE_POST';

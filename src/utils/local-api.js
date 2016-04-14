@@ -1,6 +1,7 @@
 import { schema } from './database-schema';
 import { extractConditionsWith, extractUpdatesWith, getCurrentTimestamp,
-         extractOptionsWith, defaults } from './database-utils';
+         extractOptionsWith, defaults, OR
+       } from './database-utils';
 
 
 export function fetchAll({ resource, params = {}, options = {} }) {
@@ -120,21 +121,22 @@ export function processInBulk(data) {
     for(resource of Object.keys(data)) {
 
       for(attrs of data[resource]) {
-        if(attrs.id) {
-          params = { id: attrs.id };
-        } else {
-          params = { remote_id: attrs.remote_id };
-        }
+
+        params = [
+          OR, { id: attrs.id || null, remote_id: attrs.remote_id || null }
+        ];
 
         if(attrs.deleted_at) {
           promises.push(destroy({ resource, params }));
         } else {
+
           // try to create
-          promises.push(create({ resource, data: attrs }).then(
-            () => Promise.resolve(true),
-            // catch duplicate, then update
-            () => update({ resource, data: attrs, params })
-          ));
+          promises.push(
+            fetchOne({ resource, params }).then(
+              () => update({ resource, data: attrs, params }),
+              () => create({ resource, data: attrs })
+            )
+          );
         }
       }
     }

@@ -6,7 +6,7 @@ import { LAST_SYNC }          from '../constants';
  * @return {void}
  */
 export function updateSyncDate() {
-  localStorage.setItem(LAST_SYNC, getCurrentTimestamp() / 1000);
+  localStorage.setItem(LAST_SYNC, getCurrentTimestamp());
 }
 
 
@@ -15,5 +15,5 @@ export function updateSyncDate() {
  * @return {Integer} timestamp
  */
 export function getLastSyncDate() {
-  return localStorage.getItem(LAST_SYNC);
+  return localStorage.getItem(LAST_SYNC) || 0;
 }
