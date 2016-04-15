@@ -1,4 +1,5 @@
-import { schema } from './database-schema';
+import { schema, getResources } from './database-schema';
+import { resetSyncDate } from './index';
 import { extractConditionsWith, extractUpdatesWith, getCurrentTimestamp,
          extractOptionsWith, defaults, OR
        } from './database-utils';
@@ -31,15 +32,11 @@ export function fetchOne({ resource, params = {} }) {
 }
 
 
-export function create({ resource, data }, transaction = false) {
+export function create({ resource, data }) {
   return schema.then((database) => {
     const table = database.getSchema().table(resource);
     const row   = table.createRow(defaults(table, data));
     const scope = database.insert().into(table).values([row]);
-
-    if(transaction) {
-      return scope;
-    }
 
     return scope.exec().then(
       (result) => {
@@ -54,15 +51,11 @@ export function create({ resource, data }, transaction = false) {
 }
 
 
-export function destroy({ resource, params = {} }, transaction = false) {
+export function destroy({ resource, params = {} }) {
   return schema.then((database) => {
     const table      = database.getSchema().table(resource);
     const conditions = extractConditionsWith(table, params);
     const scope      = database.delete().from(table).where(conditions);
-
-    if(transaction) {
-      return scope;
-    }
 
     return scope.exec().then(() => {
       return Promise.resolve(params.id || null);
@@ -71,7 +64,7 @@ export function destroy({ resource, params = {} }, transaction = false) {
 }
 
 
-export function softDelete({ resource, params = {} }, transaction = false) {
+export function softDelete({ resource, params = {} }) {
   return schema.then((database) => {
     const table      = database.getSchema().table(resource);
     const conditions = extractConditionsWith(table, params);
@@ -79,9 +72,6 @@ export function softDelete({ resource, params = {} }, transaction = false) {
                                .set(table.updated_at, getCurrentTimestamp())
                                .set(table.deleted_at, getCurrentTimestamp())
                                .where(conditions);
-    if(transaction) {
-      return scope;
-    }
 
     return scope.exec().then(() => {
       return Promise.resolve(params.id || null);
@@ -90,7 +80,7 @@ export function softDelete({ resource, params = {} }, transaction = false) {
 }
 
 
-export function update({ resource, data, params = {}}, transaction = false) {
+export function update({ resource, data, params = {}}) {
   return schema.then((database) => {
     const table      = database.getSchema().table(resource);
     const conditions = extractConditionsWith(table, params);
@@ -103,44 +93,47 @@ export function update({ resource, data, params = {}}, transaction = false) {
 
     scope = extractUpdatesWith(scope, table, data).where(conditions);
 
-
-    if(transaction) {
-      return scope;
-    }
-
     return scope.exec().then(() => Promise.resolve(data));
   });
+}
+
+
+export function insertOrUpdate({ resource, data, params = {} }) {
+  return fetchOne({ resource, params }).then(
+    () => update({ resource, data: attrs, params }),
+    () => create({ resource, data: attrs })
+  );
 }
 
 
 export function processInBulk(data) {
   return schema.then((database) => {
     const promises = [];
-    let resource, params, attrs;
+    let params, resource, attrs;
 
     for(resource of Object.keys(data)) {
-
       for(attrs of data[resource]) {
 
-        params = [
-          OR, { id: attrs.id || null, remote_id: attrs.remote_id || null }
-        ];
+        params = {
+          criteria: OR,
+          fields: { id: attrs.id || '', remote_id: attrs.remote_id || 0 }
+        };
 
         if(attrs.deleted_at) {
           promises.push(destroy({ resource, params }));
         } else {
-
-          // try to create
-          promises.push(
-            fetchOne({ resource, params }).then(
-              () => update({ resource, data: attrs, params }),
-              () => create({ resource, data: attrs })
-            )
-          );
+          promises.push(insertOrUpdate({ resource, data: attrs, params }));
         }
       }
     }
 
     return Promise.all(promises);
   });
+}
+
+
+export function wipeDatabase() {
+  resetSyncDate();
+  const promises = getResources().map((resource) => destroy({ resource }));
+  return Promise.all(promises);
 }

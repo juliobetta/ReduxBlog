@@ -45,6 +45,11 @@ export function generateId() {
  *   id: 1,
  *   val: ['gt', 2]
  * }
+ * // or
+ * params = {
+ *   criteria: OR,
+ *   fields: { id: 1, val: ['gt', 2] }
+ * }
  * @param  {Lovefield.Table} table
  * @param  {Object} params
  * @param  {String} criteria = 'and'
@@ -62,11 +67,10 @@ export function extractConditionsWith(table, params) {
   const args = [];
   let criteria = AND;
 
-  if(params instanceof Array) {
-    criteria = params[0];
-    params   = params[1];
+  if(params.criteria && params.fields) {
+    criteria = params.criteria;
+    params   = params.fields;
   }
-
   for(let [key, value] of Object.entries(params)) {
     if(value instanceof Array) {
       args.push(table[key][value[0]](value[1]));

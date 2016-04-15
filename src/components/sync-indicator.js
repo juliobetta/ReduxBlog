@@ -13,6 +13,13 @@ class SyncIndicator extends PureComponent {
   }
 
 
+  renderLink(label) {
+    return (
+      <a href="#" onClick={this.onClickIndicator.bind(this)}>{label}</a>
+    );
+  }
+
+
   renderInSync() {
     return (
       <Label warning>SYNCING...</Label>
@@ -22,9 +29,7 @@ class SyncIndicator extends PureComponent {
 
   renderSync() {
     return (
-      <Label success>
-        <a href="#" onClick={this.onClickIndicator.bind(this)}>IN SYNC</a>
-      </Label>
+      <Label success>{this.renderLink('IN SYNC')}</Label>
     );
   }
 
@@ -32,7 +37,7 @@ class SyncIndicator extends PureComponent {
   render() {
     if(this.props.isOffline) {
       return (
-        <Label danger>OFFLINE</Label>
+        <Label danger>{this.renderLink('OFFLINE')}</Label>
       );
     }
 
