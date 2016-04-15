@@ -48,7 +48,7 @@ export function getUser() {
 export function signin(data) {
   return {
     type: SIGNIN_USER,
-    payload: webApi({ method: POST, uri: 'sessions', data }).then((response) => {
+    payload: webApi({ method: POST, uri: 'sessions', data }).then((response) =>{
       return destroy({ resource: USERS_RESOURCE }).then(() => {
         return createAndResolveCurrentUser(response);
       });
@@ -76,6 +76,10 @@ export function cancelUser() {
 export function updateUser(data) {
   return {
     type: UPDATE_USER,
-    payload: webApi({ method: PATCH, uri: 'users/0', data })
+    payload: webApi({ method: PATCH, uri: 'users/0', data }).then((response) =>{
+      return destroy({ resource: USERS_RESOURCE }).then(() => {
+        return createAndResolveCurrentUser(response);
+      });
+    })
   };
 }

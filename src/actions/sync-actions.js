@@ -13,12 +13,19 @@ export const SYNC_STARTED  = 'SYNC_STARTED';
 export const SYNC_FINISHED = 'SYNC_FINISHED';
 
 
+
+// #############################################################################
+// PRIVATE FUNCTIONS ###########################################################
+// #############################################################################
+
 function processResponse(response) {
   return processInBulk(response.data);
 }
 
 
 function processError({ error, dispatch }) {
+  console.log(error);
+
   if(error.offline) {
     dispatch({ type: NETWORK_OFFLINE, payload: true });
     return;
@@ -31,65 +38,71 @@ function processError({ error, dispatch }) {
 }
 
 
+function fetchAllAndSyncUp() {
+  const params = { updated_at: ['gte', getLastSyncDate()] };
+
+  return Post.fetchAll(params).then((posts) => {
+    const data = { data: { posts } };
+
+    return webApi(
+      {
+        data,
+        method: PATCH,
+        uri: 'sync',
+      }
+    ).then(processResponse);
+  });
+}
+
+
+function syncAllDown() {
+  return webApi(
+    {
+      method: GET,
+      uri: `sync?updated_at=${getLastSyncDate()}`
+    }
+  ).then(processResponse);
+}
+
+
+
+// #############################################################################
+// PUBLIC FUNCTIONS ############################################################
+// #############################################################################
+
 export function syncDown() {
   return dispatch => {
     dispatch({ type: SYNC_STARTED });
 
-    webApi({ method: GET, uri: `sync?updated_at=${getLastSyncDate()}` })
-      .then(processResponse)
-      .then(() => {
-        updateSyncDate();
-        dispatch({ type: SYNC_FINISHED });
-      })
-      .catch(error => processError({ error, dispatch }));
+    syncAllDown.then(() => {
+      updateSyncDate();
+      dispatch({ type: SYNC_FINISHED });
+    }).catch(error => processError({ error, dispatch }));
   };
 }
 
 
 export function syncUp() {
   return dispatch => {
-    const params = { updated_at: ['gte', getLastSyncDate()] };
-
     dispatch({ type: SYNC_STARTED });
 
-    Post.fetchAll(params).then((posts) => {
-      const data = { data: { posts } };
-
-      webApi({ method: PATCH, uri: 'sync', data })
-        .then(processResponse)
-        .then(() => {
-          updateSyncDate();
-          dispatch({ type: SYNC_FINISHED });
-        })
-        .catch(error => processError({ error, dispatch }));
-    });
+    fetchAllAndSyncUp().then(() => {
+      updateSyncDate();
+      dispatch({ type: SYNC_FINISHED });
+    }).catch(error => processError({ error, dispatch }));
   };
 }
 
 
 export function syncAll() {
   return dispatch => {
-    webApi({ method: GET, uri: `sync?updated_at=${getLastSyncDate()}` })
-      .then(processResponse)
-      .then(() => {
-        const params = { updated_at: ['gte', getLastSyncDate()] };
-
-        return Post.fetchAll(params).then((posts) => {
-          const data = { data: { posts } };
-
-          return webApi({ method: PATCH, uri: 'sync', data })
-                  .then(processResponse)
-                  .then(() => {
-                    updateSyncDate();
-                    return Promise.resolve(true);
-                  });
-        });
-      })
+      syncAllDown()
+      .then(fetchAllAndSyncUp)
       .then(Post.index)
       .then((posts) => {
+        updateSyncDate();
         dispatch({ type: FETCH_POSTS, payload: posts });
         dispatch({ type: SYNC_FINISHED });
-      })
-      .catch(error => processError({ error, dispatch }));
+      }).catch(error => processError({ error, dispatch }));
   };
 }
