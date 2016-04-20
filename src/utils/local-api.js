@@ -100,8 +100,8 @@ export function update({ resource, data, params = {}}) {
 
 export function insertOrUpdate({ resource, data, params = {} }) {
   return fetchOne({ resource, params }).then(
-    () => update({ resource, data: attrs, params }),
-    () => create({ resource, data: attrs })
+    () => update({ resource, data, params }),
+    () => create({ resource, data })
   );
 }
 

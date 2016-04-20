@@ -16,6 +16,17 @@ class Post {
   }
 
 
+  static fetchAllRemoteIds() {
+    return Post.fetchAll({ remote_id: ['neq', null] }).then((results) => {
+      if(results.length === 0) {
+        return Promise.resolve([]);
+      }
+
+      return Promise.resolve(results.map(post => post.remote_id));
+    });
+  }
+
+
   static fetchAll(params) {
     return Database.fetchAll({ resource: POSTS_RESOURCE, params });
   }

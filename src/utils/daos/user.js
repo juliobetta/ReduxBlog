@@ -24,7 +24,7 @@ class User {
 
 
   static destroy() {
-    return Database.destroy({ resource: USERS_RESOURCE }).then(() => {}, (e) => console.log(e));
+    return Database.destroy({ resource: USERS_RESOURCE });
   }
 
 };

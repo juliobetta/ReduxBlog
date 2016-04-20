@@ -1,11 +1,10 @@
 import { push }                              from 'react-router-redux';
-import { NETWORK_OFFLINE }                   from '../constants';
 import { GET, PATCH }                        from '../constants/http-methods';
 import { updateSyncDate, getLastSyncDate }   from '../utils';
 import { fetchAll, fetchOne, processInBulk } from '../utils/local-api';
 import { webApi }                            from '../utils/web-api';
 import  Post                                 from '../utils/daos/post';
-import { SIGNOUT_USER }                      from '../actions/users-actions';
+import { handleError }                       from '../utils/error-handler';
 import { FETCH_POSTS }                       from '../actions/posts-actions';
 
 
@@ -19,21 +18,7 @@ export const SYNC_FINISHED = 'SYNC_FINISHED';
 // #############################################################################
 
 function processResponse(response) {
-  updateSyncDate();
   return processInBulk(response.data);
-}
-
-
-function processError({ error, dispatch }) {
-  if(error.offline) {
-    dispatch({ type: NETWORK_OFFLINE, payload: true });
-    return;
-  }
-
-  if(error.status === 401) {
-    dispatch({ type: SIGNOUT_USER });
-    dispatch(push('/sign_in'));
-  }
 }
 
 
@@ -74,8 +59,11 @@ export function syncDown() {
     dispatch({ type: SYNC_STARTED });
 
     syncAllDown()
-      .then(() => dispatch({ type: SYNC_FINISHED }))
-      .catch(error => processError({ error, dispatch }));
+      .then(() => {
+        dispatch({ type: SYNC_FINISHED });
+        updateSyncDate();
+      })
+      .catch(error => handleError({ error, dispatch }));
   };
 }
 
@@ -85,8 +73,11 @@ export function syncUp() {
     dispatch({ type: SYNC_STARTED });
 
     fetchAllAndSyncUp()
-      .then(() => dispatch({ type: SYNC_FINISHED }))
-      .catch(error => processError({ error, dispatch }));
+      .then(() => {
+        dispatch({ type: SYNC_FINISHED });
+        updateSyncDate();
+      })
+      .catch(error => handleError({ error, dispatch }));
   };
 }
 
@@ -99,6 +90,7 @@ export function syncAll() {
       .then((posts) => {
         dispatch({ type: FETCH_POSTS, payload: posts });
         dispatch({ type: SYNC_FINISHED });
-      }).catch(error => processError({ error, dispatch }));
+        updateSyncDate();
+      }).catch(error => handleError({ error, dispatch }));
   };
 }

@@ -5,6 +5,11 @@ import { HEAD }   from '../constants/http-methods';
 export const NETWORK_OFFLINE = 'NETWORK_OFFLINE';
 
 
+/**
+ * Set network offline status
+ * @param {Boolean} status
+ * @return {Object}
+ */
 export function setNetworkStatus(status) {
   return {
     type:    NETWORK_OFFLINE,
@@ -13,6 +18,10 @@ export function setNetworkStatus(status) {
 }
 
 
+/**
+ * Check network status
+ * @return {Function}
+ */
 export function checkNetworkIsOnline() {
   return dispatch => {
     webApi({ method: HEAD }).then(
